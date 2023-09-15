@@ -22,8 +22,8 @@ namespace Ahk.GradeManagement.Functions.Groups
             this.groupService = groupService;
         }
 
-        [Function("EditGroupFunction")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "edit-group/{subject}")] HttpRequestData req, string subject,
+        [Function("edit-group")]
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "edit-group")] HttpRequestData req,
             [FromBody] GroupDTO groupDTO)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");

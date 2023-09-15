@@ -12,5 +12,8 @@ namespace Ahk.GradeManagement.Services.AssignmentService
         public Task SaveAssignmentAsync(Assignment assignment);
         public Task<List<Assignment>> ListAsync(string subject);
         public Task<List<Exercise>> ListExercisesAsync(string subject, string assignmentId);
+        public Task DeleteAssignmentAsync(string assignmentId);
+        public Task UpdateAssignmentAsync(Assignment assignment);
+        public Task UpdateExercisesAsync(List<Exercise> exercises);
     }
 }

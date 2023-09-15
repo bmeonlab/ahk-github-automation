@@ -54,9 +54,15 @@ namespace Ahk.Review.Ui.Services
             }).ToList();
         }
 
+        public async Task EditAssignmentAsync(Assignment updateAssignment, List<Exercise> exercisesUpdate)
+        {
+            await httpClient.PostAsJsonAsync<AssignmentDTO>($"edit-assignment", Mapper.Map<AssignmentDTO>(updateAssignment));
+            await httpClient.PostAsJsonAsync<List<ExerciseDTO>>($"edit-exercises", Mapper.Map<List<ExerciseDTO>>(exercisesUpdate));
+        }
+
         public async Task DeleteAssignmentAsync(string assignmentId)
         {
-
+            await httpClient.DeleteAsync($"delete-assignment/{assignmentId}");
         }
     }
 }

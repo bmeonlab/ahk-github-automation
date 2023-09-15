@@ -1,7 +1,7 @@
 using Ahk.Review.Ui.Models;
 using Ahk.Review.Ui.Services;
 using Microsoft.AspNetCore.Components;
-using Newtonsoft.Json;
+using Microsoft.JSInterop;
 
 namespace Ahk.Review.Ui.Pages.SubjectPages
 {
@@ -15,6 +15,8 @@ namespace Ahk.Review.Ui.Pages.SubjectPages
         private AssignmentService AssignmentService { get; set; }
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; }
 
         private int subjectId;
         private string courseCode;
@@ -78,10 +80,16 @@ namespace Ahk.Review.Ui.Pages.SubjectPages
 
         private async Task DeleteGroup(int groupId)
         {
-            await GroupService.DeleteGroupAsync(groupId.ToString());
-            groups.Remove(groups.Find(g => g.Id == groupId));
+            bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this group?");
 
-            StateHasChanged();
+            if (confirmed)
+            {
+                await GroupService.DeleteGroupAsync(groupId.ToString());
+                groups.Remove(groups.Find(g => g.Id == groupId));
+
+                StateHasChanged();
+            }
+
         }
 
         private void ShowGroupDetails(int groupId)
@@ -91,13 +99,20 @@ namespace Ahk.Review.Ui.Pages.SubjectPages
 
         private void EditAssignment(int assignmentId)
         {
-            NavigationManager.NavigateTo($"/edit-assignment/{assignmentId}");
+            NavigationManager.NavigateTo($"/edit-assignment/{SubjectService.TenantCode}/{assignmentId}");
         }
 
         private async Task DeleteAssignment(int assignmentId)
         {
-            await AssignmentService.DeleteAssignmentAsync(assignmentId.ToString());
-            StateHasChanged();
+            var confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to delete this assignment?");
+
+            if (confirmed)
+            {
+                await AssignmentService.DeleteAssignmentAsync(assignmentId.ToString());
+                assignments.Remove(assignments.Find(a => a.Id == assignmentId));
+
+                StateHasChanged();
+            }
         }
 
         private void ShowAssignmentDetails(int assignmentId)

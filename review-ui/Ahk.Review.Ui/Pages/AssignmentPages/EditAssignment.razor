@@ -1,7 +1,27 @@
 @page "/edit-assignment/{subject}/{assignmentId}"
 
-<h3>EditAssignment</h3>
+<MudPaper Class="pa-4 mb-4">
+    <MudStack Row="true">
+        <MudTextField @bind-Value="assignment.Name" Label="Name"></MudTextField>
+        <MudTextField @bind-Value="classroomAssignment" Label="Classroom assingment"></MudTextField>
+    </MudStack>
+</MudPaper>
 
-@code {
-
+@foreach (var exercise in exercises)
+{
+    <MudPaper Class="pa-4 mb-4">
+        <MudStack Row="true">
+            <MudTextField @bind-Value="exercise.Name" Label="Exercise"></MudTextField>
+            <MudTextField @bind-Value="exercise.AvailablePoints" Label="Available points"></MudTextField>
+        </MudStack>
+    </MudPaper>  
 }
+
+<MudPaper Class="pa-4 mb-4">
+    <MudStack>
+        <MudDatePicker @bind-Date="date"></MudDatePicker>
+        <MudTimePicker @bind-Time="time"></MudTimePicker>
+    </MudStack>
+</MudPaper>
+
+<MudButton Variant="Variant.Filled" Color="Color.Primary" Style="margin:auto" OnClick="() => SubmitAsync()">Submit</MudButton>
