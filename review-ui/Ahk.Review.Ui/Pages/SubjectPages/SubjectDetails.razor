@@ -12,6 +12,7 @@
 
 <MudStack  Row="true">
     <MudPaper Width="50%" Class="pa-4 mb-4">
+        <MudButton Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => CreateGroup()">Add Group</MudButton>
         <MudTable Items="groups" T="Group" RowsPerPage="50">
             <HeaderContent>
                 <MudTh>Name</MudTh>
@@ -34,7 +35,8 @@
             </PagerContent>
         </MudTable>
     </MudPaper>
-    <MudPaper Width="50%" Class="pa-4 mb-4">
+    <MudPaper Width="50%" Class="pa-4 object-right mb-4">
+        <MudButton  Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => CreateAssignment()">Add Assignment</MudButton>
         <MudTable Items="assignments" T="Assignment" RowsPerPage="50">
             <HeaderContent>
                 <MudTh>Name</MudTh>

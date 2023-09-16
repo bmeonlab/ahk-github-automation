@@ -1,11 +1,14 @@
 @page "/create-assignment"
-<h3>CreateAssignment</h3>
 
-@if (!loaded)
-{
-    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
-}
-else
-{
 
-}
+<MudPaper Class="pa-4 mb-4">
+    <MudStack Row="true">
+        <MudTextField @bind-Value="@assignmentName" Label="Assignment Name"></MudTextField>
+        <MudTextField @bind-Value="@classroomAssignment" Label="Classroom Assignemnt"></MudTextField>
+    </MudStack>
+    <MudStack>
+        <MudDatePicker @bind-Date="date"></MudDatePicker>
+        <MudTimePicker @bind-Time="time"></MudTimePicker>
+    </MudStack>
+    <MudButton Class="ma-4 pa-2" Variant="Variant.Filled"  Color="Color.Primary" OnClick="() => SubmitAssignment()">Submit</MudButton>
+</MudPaper>

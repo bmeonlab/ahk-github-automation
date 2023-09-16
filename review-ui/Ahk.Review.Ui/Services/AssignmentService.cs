@@ -19,7 +19,7 @@ namespace Ahk.Review.Ui.Services
             this.Mapper = mapper;
         }
 
-        public async void PostDataAsync(Assignment assignment)
+        public async Task PostDataAsync(Assignment assignment)
         {
             await httpClient.PostAsJsonAsync($"create-assignment", Mapper.Map<AssignmentDTO>(assignment));
         }

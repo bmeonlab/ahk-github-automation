@@ -10,6 +10,8 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 
+using FromBodyAttribute = Microsoft.Azure.Functions.Worker.Http.FromBodyAttribute;
+
 namespace Ahk.GradeManagement.Functions.Assignments
 {
     public class CreateAssignmentFunction
@@ -24,30 +26,14 @@ namespace Ahk.GradeManagement.Functions.Assignments
         }
 
         [Function("create-assignment")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "create-assignment")] HttpRequestData req)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "create-assignment")] HttpRequestData req,
+            [FromBody] Assignment assignment)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            string requestBody = await HttpRequestDataExtensions.ReadAsStringAsync(req);
 
-            if (!PayloadReader.TryGetPayload<Assignment>(requestBody, out var requestDeserialized, out var deserializationError))
-                return new BadRequestObjectResult(new { error = deserializationError });
-
-
-            return await runCore(_logger, requestDeserialized);
-        }
-
-        private async Task<IActionResult> runCore(ILogger logger, Assignment requestDeserialized)
-        {
-            try
-            {
-                await service.SaveAssignmentAsync(requestDeserialized);
-                return new OkResult();
-            }
-            catch (Exception ex)
-            {
-                return new ObjectResult(new { error = ex.ToString() }) { StatusCode = StatusCodes.Status500InternalServerError };
-            }
+            await service.SaveAssignmentAsync(assignment);
+            return new OkResult();
         }
     }
 }

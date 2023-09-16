@@ -68,6 +68,16 @@ namespace Ahk.Review.Ui.Pages.SubjectPages
             StateHasChanged();
         }
 
+        private void CreateGroup()
+        {
+            NavigationManager.NavigateTo("/create-group");
+        }
+
+        private void CreateAssignment()
+        {
+            NavigationManager.NavigateTo("/create-assignment");
+        }
+
         private void EditSubject(int subjectId)
         {
             NavigationManager.NavigateTo($"/edit-subject/{subjectId}");
