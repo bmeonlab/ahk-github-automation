@@ -19,9 +19,13 @@ namespace Ahk.Review.Ui.Services
             this.Mapper = mapper;
         }
 
-        public async Task PostDataAsync(Assignment assignment)
+        public async Task CreateAssingmentAsync(Assignment assignment, List<Exercise> exercises)
         {
-            await httpClient.PostAsJsonAsync($"create-assignment", Mapper.Map<AssignmentDTO>(assignment));
+            var assignmentDTO = Mapper.Map<AssignmentDTO>(assignment);
+            var exercisesDTO = Mapper.Map<List<ExerciseDTO>>(exercises);
+            assignmentDTO.Exercises = exercisesDTO;
+
+            await httpClient.PostAsJsonAsync($"create-assignment", assignmentDTO);
         }
 
         public async Task<List<Assignment>> GetAssignmentsAsync(string subject)

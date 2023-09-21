@@ -19,8 +19,22 @@ namespace Ahk.GradeManagement.Services.AssignmentService
             Context = context;
         }
 
-        public async Task SaveAssignmentAsync(Assignment assignment)
+        public async Task SaveAssignmentAsync(Assignment assignment, string subjectCode)
         {
+            var subject = Context.Subjects.Where(s => s.SubjectCode == subjectCode).FirstOrDefault();
+            assignment.Subject = subject;
+
+            var studentsOfSubject = Context.StudentSubjects.Where(ss => ss.Subject.SubjectCode == subjectCode).Select(ss => ss.Student).ToList();
+
+            foreach (var student in studentsOfSubject)
+            {
+                Context.StudentAssignments.Add(new StudentAssignment
+                {
+                    Student = student,
+                    Assignment = assignment,
+                });
+            }
+
             Context.Assignments.Add(assignment);
             await Context.SaveChangesAsync();
         }

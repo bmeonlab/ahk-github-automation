@@ -1,6 +1,13 @@
 @page "/create-subject"
-<h3>CreateSubject</h3>
 
-@code {
 
-}
+<MudPaper Class="pa-4 mb-4">
+    <MudStack Row="true">
+        <MudTextField @bind-Value="@subjectCode" Label="CourseCode"></MudTextField>
+        <MudTextField @bind-Value="@name" Label="Name"></MudTextField>
+    </MudStack>
+    <MudTextField @bind-Value="@semester" Label="Semester"></MudTextField>
+    <MudTextField @bind-Value="@githubOrg" Label="Github Organization"></MudTextField>
+    <MudTextField @bind-Value="@ahkConfig" Label="Ahk Config"></MudTextField>
+    <MudButton Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => Submit()">Submit</MudButton>
+</MudPaper>

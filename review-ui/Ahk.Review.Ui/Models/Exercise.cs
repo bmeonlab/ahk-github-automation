@@ -5,6 +5,7 @@ namespace Ahk.Review.Ui.Models
 {
     public class Exercise
     {
+        public Exercise() { }
         public Exercise(ExerciseDTO exerciseDTO)
         {
             this.Id = exerciseDTO.Id;

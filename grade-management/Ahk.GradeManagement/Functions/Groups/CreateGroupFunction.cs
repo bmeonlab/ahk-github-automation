@@ -1,16 +1,22 @@
 using System;
 using System.Net;
+using System.Security.Cryptography.Xml;
 using System.Threading.Tasks;
 using Ahk.GradeManagement.Data.Entities;
 using Ahk.GradeManagement.ResultProcessing.Dto;
 using Ahk.GradeManagement.Services;
 using Ahk.GradeManagement.Services.GroupService;
 using Azure.Core;
+
+using DTOs;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
+
+using FromBodyAttribute = Microsoft.Azure.Functions.Worker.Http.FromBodyAttribute;
 
 namespace Ahk.GradeManagement.Functions.Groups
 {
@@ -25,30 +31,22 @@ namespace Ahk.GradeManagement.Functions.Groups
             service = _service;
         }
 
-        [Function("CreateGroupFunction")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "create-group")] HttpRequestData request)
+        [Function("create-group")]
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "create-group/{subjectId}")] HttpRequestData request, string subjectId,
+            [FromBody] GroupDTO groupDTO)
         {
             logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            string requestBody = await HttpRequestDataExtensions.ReadAsStringAsync(request);
-
-            if (!PayloadReader.TryGetPayload<Group>(requestBody, out var requestDeserialized, out var deserializationError))
-                return new BadRequestObjectResult(new { error = deserializationError });
-
-            return await runCore(logger, requestDeserialized);
-        }
-
-        private async Task<IActionResult> runCore(ILogger logger, Group requestDeserialized)
-        {
-            try
+            var group = new Group
             {
-                await service.SaveGroupAsync(requestDeserialized);
-                return new OkResult();
-            }
-            catch (Exception ex)
-            {
-                return new ObjectResult(new { error = ex.ToString() }) { StatusCode = StatusCodes.Status500InternalServerError };
-            }
+                Name = groupDTO.Name,
+                Room = groupDTO.Room,
+                Time = groupDTO.Time,
+            };
+
+            await service.SaveGroupAsync(subjectId, group);
+
+            return new OkResult();
         }
     }
 }

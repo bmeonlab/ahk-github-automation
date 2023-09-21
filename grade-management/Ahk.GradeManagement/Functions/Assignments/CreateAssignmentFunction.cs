@@ -1,9 +1,13 @@
 using System;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Ahk.GradeManagement.Data.Entities;
 using Ahk.GradeManagement.Services.AssignmentService;
 using Azure.Core;
+
+using DTOs;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -26,13 +30,29 @@ namespace Ahk.GradeManagement.Functions.Assignments
         }
 
         [Function("create-assignment")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "create-assignment")] HttpRequestData req,
-            [FromBody] Assignment assignment)
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "post", Route = "create-assignment/{subject}")] HttpRequestData req, string subject,
+            [FromBody] AssignmentDTO assignmentDTO)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
+            var exercises = assignmentDTO.Exercises.Select(eDTO => 
+            {
+                return new Exercise
+                {
+                    Name = eDTO.Name,
+                    AvailablePoints = eDTO.AvailablePoints,
+                };
+            }).ToList();
 
-            await service.SaveAssignmentAsync(assignment);
+            var assignment = new Assignment
+            {
+                Name = assignmentDTO.Name,
+                DeadLine = assignmentDTO.DeadLine,
+                ClassroomAssignment = assignmentDTO.ClassroomAssignment,
+                Exercises = exercises,
+            };
+
+            await service.SaveAssignmentAsync(assignment, subject);
             return new OkResult();
         }
     }

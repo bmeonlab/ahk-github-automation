@@ -17,6 +17,9 @@ namespace Ahk.Review.Ui.Pages.AssignmentPages
         private string classroomAssignment;
         private DateTime? date;
         private TimeSpan? time;
+        private string exerciseName;
+        private string availablePoints;
+        private List<Exercise> exercises = new List<Exercise>();
 
 
         protected override void OnInitialized()
@@ -36,8 +39,20 @@ namespace Ahk.Review.Ui.Pages.AssignmentPages
                 SubjectId = SubjectService.CurrentTenant.Id,
             };
 
-            await AssignmentService.PostDataAsync(assignment);
+            await AssignmentService.CreateAssingmentAsync(assignment, exercises);
             NavigationManager.NavigateTo("/subject-details");
+        }
+
+        private void AddExercise()
+        {
+            Exercise exercise = new Exercise
+            {
+                Name = exerciseName,
+                AvailablePoints = int.Parse(availablePoints),
+            };
+
+            exercises.Add(exercise);
+            StateHasChanged();
         }
     }
 }

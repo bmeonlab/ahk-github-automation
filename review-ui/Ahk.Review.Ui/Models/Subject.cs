@@ -4,6 +4,7 @@ namespace Ahk.Review.Ui.Models
 {
     public class Subject
     {
+        public Subject() { }
         public Subject(SubjectDTO subjectDTO)
         {
             this.Id = subjectDTO.Id;

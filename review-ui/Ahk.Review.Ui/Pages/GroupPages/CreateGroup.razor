@@ -1,11 +1,10 @@
 @page "/create-group"
-<h3>CreateGroup</h3>
 
-@if (!loaded)
-{
-    <MudProgressCircular Color="Color.Default" Indeterminate="true" />
-}
-else
-{
-    
-}
+
+
+<MudPaper Class="pa-4 mb-4">
+    <MudTextField @bind-Value="@name" Label="Name"></MudTextField>
+    <MudTextField Margin="Margin.Normal" @bind-Value="@room" Label="Room"></MudTextField>
+    <MudTextField Margin="Margin.Normal" @bind-Value="@time" Label="Time"></MudTextField>
+    <MudButton Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => Submit()">Submit</MudButton>
+</MudPaper>

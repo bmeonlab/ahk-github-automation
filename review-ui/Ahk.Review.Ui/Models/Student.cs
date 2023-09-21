@@ -4,6 +4,10 @@ namespace Ahk.Review.Ui.Models
 {
     public class Student
     {
+        public Student()
+        {
+
+        }
         public Student(StudentDTO studentDTO)
         {
             this.Id = studentDTO.Id;

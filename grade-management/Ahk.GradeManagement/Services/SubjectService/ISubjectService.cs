@@ -10,5 +10,7 @@ namespace Ahk.GradeManagement.Services.SubjectService
     public interface ISubjectService
     {
         IReadOnlyCollection<Subject> GetAllSubjects();
+        Task CreateSubjectAsync(Subject subject);
+        Task EditSubjectAsync(Subject subject);
     }
 }

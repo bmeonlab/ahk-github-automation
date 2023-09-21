@@ -1,5 +1,56 @@
 @page "/group-details/{groupId}"
 
-<h3>GroupDetails</h3>
+<MudPaper Class="pa-4 mb-4">
+    <MudTextField @bind-Value="@group.Name" ReadOnly="true" Label="Group name"></MudTextField>
+</MudPaper>
 
+<MudStack Row="true">
+    <MudPaper Width="50%" Class="pa-4 mb-4">
+        <MudButton Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => AddTeacher()">Add Teacher</MudButton>
+        <MudTable Items="teachers" T="Teacher" RowsPerPage="50">
+            <HeaderContent>
+                <MudTh>Name</MudTh>
+                <MudTh>Neptun</MudTh>
+                <MudTh>EduEmail</MudTh>
+                <MudTh>GithubUser</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">@context.Name</MudTd>
+                <MudTd DataLabel="Neptun">@context.Neptun</MudTd>
+                <MudTd DataLabel="EduEmail">@context.EduEmail</MudTd>
+                <MudTd DataLabel="GithubUser">@context.GithubUser</MudTd>
+                <MudTd DataLabel="Actions">
+                    <MudButton Class="ma-2 pa-2" Variant="Variant.Filled" Color="Color.Error" OnClick="() => RemoveTeacherFromGroup(context.Id)">Remove</MudButton>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager Class="pa-4" HorizontalAlignment="HorizontalAlignment.End" />
+            </PagerContent>
+        </MudTable>
+    </MudPaper>
+    <MudPaper Width="50%" Class="pa-4 object-right mb-4">
+        <MudButton Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => AddStudent()">Add Student</MudButton>
+        <MudTable Items="students" T="Student" RowsPerPage="50">
+            <HeaderContent>
+                <MudTh>Name</MudTh>
+                <MudTh>Neptun</MudTh>
+                <MudTh>EduEmail</MudTh>
+                <MudTh>GithubUser</MudTh>
+                <MudTh>Actions</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">@context.Name</MudTd>
+                <MudTd DataLabel="Neptun">@context.Neptun</MudTd>
+                <MudTd DataLabel="EduEmail">@context.EduEmail</MudTd>
+                <MudTd DataLabel="GithubUser">@context.GithubUser</MudTd>
+                <MudTd DataLabel="Actions">
+                    <MudButton Class="ma-2 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => RemoveStudentFromGroup(context.Id)">Remove</MudButton>
+                </MudTd>
+            </RowTemplate>
+            <PagerContent>
+                <MudTablePager Class="pa-4" HorizontalAlignment="HorizontalAlignment.End" />
+            </PagerContent>
+        </MudTable>
+    </MudPaper>
+</MudStack>
 

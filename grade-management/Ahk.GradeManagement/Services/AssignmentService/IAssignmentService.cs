@@ -9,7 +9,7 @@ namespace Ahk.GradeManagement.Services.AssignmentService
 {
     public interface IAssignmentService
     {
-        public Task SaveAssignmentAsync(Assignment assignment);
+        public Task SaveAssignmentAsync(Assignment assignment, string subject);
         public Task<List<Assignment>> ListAsync(string subject);
         public Task<List<Exercise>> ListExercisesAsync(string subject, string assignmentId);
         public Task DeleteAssignmentAsync(string assignmentId);

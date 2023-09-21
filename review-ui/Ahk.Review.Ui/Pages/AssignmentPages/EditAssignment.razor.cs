@@ -32,9 +32,6 @@ namespace Ahk.Review.Ui.Pages.AssignmentPages
             time = assignment.DeadLine.TimeOfDay;
             exercises = await AssignmentService.GetExercisesAsync(Subject, AssignmentId);
 
-            Console.WriteLine(date);
-            Console.WriteLine(time);
-
             StateHasChanged();
         }
 

@@ -4,6 +4,7 @@ namespace Ahk.Review.Ui.Models
 {
     public class Group
     {
+        public Group() { }
         public Group(GroupDTO groupDTO)
         {
             this.Id = groupDTO.Id;

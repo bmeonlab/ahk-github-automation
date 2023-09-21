@@ -1,0 +1,14 @@
+@page "/add-user/{groupId}/{userType}"
+
+<MudPaper Class="pa-4 mb-4">
+    <MudStack Row="true">
+        <MudTextField @bind-Value="@name" Label="Name"></MudTextField>
+        <MudTextField @bind-Value="@neptun" Label="Neptun"></MudTextField>
+    </MudStack>
+    <MudStack>
+        <MudTextField @bind-Value="@eduEmail" Label="Edu email"></MudTextField>
+        <MudTextField @bind-Value="@githubUser" Label="Github user"></MudTextField>
+    </MudStack>
+    <MudButton Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => Submit()">Submit</MudButton>
+</MudPaper>
+

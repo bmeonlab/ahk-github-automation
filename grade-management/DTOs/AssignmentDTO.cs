@@ -13,5 +13,6 @@ namespace DTOs
         public DateTimeOffset DeadLine { get; set; }
         public Uri ClassroomAssignment { get; set; }
         public int SubjectId { get; set; }
+        public List<ExerciseDTO> Exercises { get; set; }
     }
 }

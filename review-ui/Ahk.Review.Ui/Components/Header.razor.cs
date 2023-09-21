@@ -2,6 +2,8 @@ using Ahk.Review.Ui.Models;
 using Ahk.Review.Ui.Services;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Components.Server.ProtectedBrowserStorage;
+using Microsoft.JSInterop;
 
 namespace Ahk.Review.Ui.Components
 {
@@ -11,6 +13,8 @@ namespace Ahk.Review.Ui.Components
         private SubjectService Service { get; set; }
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; }
 
         private string subjectCode = string.Empty;
         private List<Subject> subjects = new List<Subject>();
@@ -24,9 +28,11 @@ namespace Ahk.Review.Ui.Components
 
         private void SetTenant()
         {
-            Service.SetCurrentTenant(subjectCode, subjects.Where(s => s.SubjectCode == subjectCode).FirstOrDefault());
-            Console.WriteLine(Service.TenantCode);
-            Console.WriteLine(JsonConvert.SerializeObject(Service.CurrentTenant));
+            var subject = subjects.Where(s => s.SubjectCode == subjectCode).FirstOrDefault();
+            Service.SetCurrentTenant(subjectCode, subject);
+            JSRuntime.InvokeAsync<string>("localStorage.setItem", "SelectedTenantCode", subjectCode);
+            JSRuntime.InvokeAsync<string>("localStorage.setItem", "SelectedTenant", subject);
+
         }
     }
 }

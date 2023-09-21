@@ -6,9 +6,30 @@
         <MudTextField @bind-Value="@assignmentName" Label="Assignment Name"></MudTextField>
         <MudTextField @bind-Value="@classroomAssignment" Label="Classroom Assignemnt"></MudTextField>
     </MudStack>
+    <MudStack Row="true">
+        <MudTextField @bind-Value="@exerciseName" Label="Exercise Name"></MudTextField>
+        <MudTextField @bind-Value="@availablePoints" Label="Available Points"></MudTextField>
+    </MudStack>
     <MudStack>
         <MudDatePicker @bind-Date="date"></MudDatePicker>
         <MudTimePicker @bind-Time="time"></MudTimePicker>
     </MudStack>
-    <MudButton Class="ma-4 pa-2" Variant="Variant.Filled"  Color="Color.Primary" OnClick="() => SubmitAssignment()">Submit</MudButton>
+    <MudStack>
+        <MudButton Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => SubmitAssignment()">Submit</MudButton>
+        <MudButton Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => AddExercise()">Add Exercise</MudButton>
+    </MudStack>
+</MudPaper>
+
+
+<MudPaper Class="pa-4 mb-4">
+    <MudTable Items="exercises" T="Exercise" RowsPerPage="50">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Available Points</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Room">@context.AvailablePoints</MudTd>
+        </RowTemplate>
+    </MudTable>
 </MudPaper>
