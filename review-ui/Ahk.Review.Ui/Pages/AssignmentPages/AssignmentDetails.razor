@@ -1,7 +1,26 @@
-@page "/assignment-details"
+@page "/assignment-details/{assignmentId}"
 
-<h3>AssignmentDetails</h3>
+<MudPaper Class="pa-4 mb-4">
+    <MudStack Row="true">
+        <MudTextField @bind-Value="@assignment.Name" ReadOnly="true" Label="Assignment Name"></MudTextField>
+        <MudTextField @bind-Value="@assignment.ClassroomAssignment" ReadOnly="true" Label="Classroom Assignemnt"></MudTextField>
+    </MudStack>
+    <MudStack Row="true">
+        <MudTextField @bind-Value="assignment.DeadLine" ReadOnly="true" Label="DeadLine"></MudTextField>
+        <MudTextField @bind-Value="subjectName" Label="Subject"></MudTextField>
+    </MudStack>
+</MudPaper>
 
-@code {
+<MudPaper Class="pa-4 mb-4">
+    <MudTable Items="exerciseList" T="Exercise">
+        <HeaderContent>
+            <MudTh>Name</MudTh>
+            <MudTh>Available points</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Name">@context.Name</MudTd>
+            <MudTd DataLabel="Available points">@context.AvailablePoints</MudTd>
+        </RowTemplate>
+    </MudTable>
+</MudPaper>
 
-}
