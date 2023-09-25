@@ -15,8 +15,8 @@ namespace Ahk.GradeManagement.Services.GroupService
         public Task<List<Teacher>> ListTeachersAsync(string groupId);
         public Task DeleteGroupAsync(int groupId);
         public Task UpdateGroupAsync(Group update);
-        public Task AddStudentToGroupAsync(string subject, string groupId, Student student);
-        public Task AddTeacherToGroupAsync(string subject, string groupId, Teacher teacher);
+        public Task AddStudentToGroupAsync(string subjectCode, string groupId, Student student);
+        public Task AddTeacherToGroupAsync(string subjectCode, string groupId, Teacher teacher);
         public Task RemoveTeacherFromGroupAsync(string groupId, string teacherId);
         public Task RemoveStudentFromGroupAsync(string groupId, string studentId);
     }

@@ -22,15 +22,10 @@ namespace Ahk.Review.Ui.Services
 
         public event Action? OnChange;
 
-        [Inject]
-        private IJSRuntime JSRuntime { get; set; }
-
         public SubjectService(IHttpClientFactory httpClientFactory, Mapper mapper)
         {
             this.httpClient = httpClientFactory.CreateClient("ApiClient");
             this.Mapper = mapper;
-            TenantCode = JSRuntime.InvokeAsync<string>("localStorage.getItem", "SelectedTenantCode").Result;
-            CurrentTenant = JSRuntime.InvokeAsync<Subject>("localStorage.getItem", "SelectedTenant").Result;
         }
 
         public async Task<IReadOnlyCollection<Subject>> GetSubjects()

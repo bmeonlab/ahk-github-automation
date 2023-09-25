@@ -27,6 +27,8 @@ namespace Ahk.GradeManagement.Helpers
                 cfg.CreateMap<PullRequestStatus, PullRequestStatusDTO>();
                 cfg.CreateMap<WorkflowRunsStatus, WorkflowRunsStatusDTO>();
                 cfg.CreateMap<StatusEventBase, StatusEventBaseDTO>();
+                cfg.CreateMap<Student, StudentDTO>();
+                cfg.CreateMap<Teacher, TeacherDTO>();
             });
 
             var mapper = new Mapper(config);

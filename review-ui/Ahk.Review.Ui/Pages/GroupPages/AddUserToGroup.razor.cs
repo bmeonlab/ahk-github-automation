@@ -24,7 +24,7 @@ public partial class AddUserToGroup : ComponentBase
     private string eduEmail;
     private string githubUser;
 
-    private void Submit()
+    private async void Submit()
     {
         if (UserType == "teacher")
         {
@@ -36,7 +36,7 @@ public partial class AddUserToGroup : ComponentBase
                 GithubUser = githubUser,
             };
 
-            GroupService.AddTeacherToGroup(SubjectService.TenantCode, GroupId, teacher);
+            await GroupService.AddTeacherToGroup(SubjectService.TenantCode, GroupId, teacher);
         }
 
         if (UserType == "student")
@@ -49,7 +49,7 @@ public partial class AddUserToGroup : ComponentBase
                 GithubUser = githubUser,
             };
 
-            GroupService.AddStudentToGroup(SubjectService.TenantCode, GroupId , student);
+            await GroupService.AddStudentToGroup(SubjectService.TenantCode, GroupId, student);
         }
 
         NavigationManager.NavigateTo($"/group-details/{GroupId}");

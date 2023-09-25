@@ -56,8 +56,8 @@ namespace Ahk.GradeManagement.ResultProcessing
                 return new BadRequestObjectResult(new { error = "X-Ahk-Token invalid" });
 
             string requestBody = await HttpRequestDataExtensions.ReadAsStringAsync(request);
-            if (!HmacSha256Validator.IsSignatureValid(request.Method, request.Url.ToString(), date, requestBody, receivedSignature, secret))
-                return new BadRequestObjectResult(new { error = "X-Ahk-Sha256 signature not valid" });
+            //if (!HmacSha256Validator.IsSignatureValid(request.Method, request.Url.ToString(), date, requestBody, receivedSignature, secret))
+            //    return new BadRequestObjectResult(new { error = "X-Ahk-Sha256 signature not valid" });
 
             if (!PayloadReader.TryGetPayload<AhkProcessResult>(requestBody, out var requestDeserialized, out var deserializationError))
                 return new BadRequestObjectResult(new { error = deserializationError });

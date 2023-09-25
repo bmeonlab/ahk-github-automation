@@ -21,7 +21,7 @@ namespace Ahk.GradeManagement.Services.GroupService
 
         public async Task SaveGroupAsync(string subjectId, Group group)
         {
-            var subject = Context.Subjects.Find(subjectId);
+            var subject = Context.Subjects.Find(Int32.Parse(subjectId));
 
             group.Subject = subject;
 
@@ -36,7 +36,7 @@ namespace Ahk.GradeManagement.Services.GroupService
 
         public async Task<List<Student>> ListStudentsAsync(string groupId)
         {
-            var studentGroups = Context.StudentGroups.Where(g => g.GroupId.ToString() == groupId).ToList();
+            var studentGroups = Context.StudentGroups.Include(g => g.Student).Where(g => g.GroupId.ToString() == groupId).ToList();
             var students = new List<Student>();
             foreach (var studentGroup in studentGroups)
             {
@@ -75,15 +75,15 @@ namespace Ahk.GradeManagement.Services.GroupService
             await Context.SaveChangesAsync();
         }
 
-        public async Task AddStudentToGroupAsync(string _subject, string groupId, Student student)
+        public async Task AddStudentToGroupAsync(string subjectCode, string groupId, Student student)
         {
             StudentGroup studentGroup = new StudentGroup
             {
                 Student = student,
-                Group = Context.Groups.Find(groupId),
+                Group = await Context.Groups.FindAsync(Int32.Parse(groupId)),
             };
 
-            Subject subject = Context.Subjects.Where(s => s.SubjectCode == _subject).FirstOrDefault();
+            Subject subject = Context.Subjects.Where(s => s.SubjectCode == subjectCode).FirstOrDefault();
 
             StudentSubject studentSubject = new StudentSubject
             {
@@ -106,15 +106,15 @@ namespace Ahk.GradeManagement.Services.GroupService
             await Context.SaveChangesAsync();
         }
 
-        public async Task AddTeacherToGroupAsync(string _subject, string groupId, Teacher teacher)
+        public async Task AddTeacherToGroupAsync(string subjectCode, string groupId, Teacher teacher)
         {
             TeacherGroup teacherGroup = new TeacherGroup
             {
                 Teacher = teacher,
-                Group = Context.Groups.Find(groupId),
+                Group = Context.Groups.Find(Int32.Parse(groupId)),
             };
 
-            Subject subject = Context.Subjects.Where(s => s.SubjectCode == _subject).FirstOrDefault();
+            Subject subject = Context.Subjects.Where(s => s.SubjectCode == subjectCode).FirstOrDefault();
 
             TeacherSubject teacherSubject = new TeacherSubject
             {

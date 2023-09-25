@@ -23,6 +23,9 @@ namespace Ahk.Review.Ui.Components
         {
             var results = await Service.GetSubjects();
             subjects = results.ToList();
+
+            Service.TenantCode = JSRuntime.InvokeAsync<string>("localStorage.getItem", "SelectedTenantCode").Result;
+            Service.CurrentTenant = JSRuntime.InvokeAsync<Subject>("localStorage.getItem", "SelectedTenant").Result;
         }
 
         private void SetTenant()
