@@ -49,7 +49,7 @@ namespace Ahk.Review.Ui.Services
             return submissionInfoDTOs.Select(r =>
             {
                 gradesLookup.TryGetValue(r.Repository, out var g);
-                return new SubmissionInfo(g.AssignmentName, r.Repository, r.Neptun, r.Branches, r.PullRequests, r.WorkflowRuns, g?.Points, events);
+                return new SubmissionInfo(g.AssignmentName, r.Repository, r.Neptun, r.Branches, r.PullRequests, r.WorkflowRuns, g?.Points, events, false);
             }).ToList();
         }
     }

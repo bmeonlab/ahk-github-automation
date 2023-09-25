@@ -104,8 +104,43 @@ else
                         </MudText>
                     }
                 </MudTd>
-                <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small"></MudButton></MudTd>
+                <MudTd><MudButton Variant="Variant.Outlined" Size="Size.Small" OnClick="@(() => ShowBtnPress(context.Repository))">@((context.ShowDetails == true) ? "Hide" : "Show") events></MudButton></MudTd>
             </RowTemplate>
+            <ChildRowContent>
+                @if (context.ShowDetails)
+                {
+                    <MudTr>
+                        <td colspan="4">
+                            <MudCard Elevation="0">
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudText Typo="Typo.body1">Events for <strong>@context.Repository</strong></MudText>
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+                                <MudCardContent Class="pa-0">
+                                    <MudTable Items="@context.Events" Context="Events" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+                                        <ColGroup>
+                                            <col />
+                                            <col />
+                                            <col style="width:200px;" />
+                                        </ColGroup>
+                                        <HeaderContent>
+                                            <MudTh>Repository</MudTh>
+                                            <MudTh>Type</MudTh>
+                                            <MudTh>Timestamp</MudTh>
+                                        </HeaderContent>
+                                        <RowTemplate>
+                                            <MudTd DataLabel="Repository">@Events.Repository</MudTd>
+                                            <MudTd DataLabel="Type">@Events.Type</MudTd>
+                                            <MudTd DataLabel="Timestamp">@Events.Timestamp</MudTd>
+                                        </RowTemplate>
+                                    </MudTable>
+                                </MudCardContent>
+                            </MudCard>
+                        </td>
+                    </MudTr>
+                }
+            </ChildRowContent>
             <PagerContent>
                 <MudTablePager Class="pa-4" HorizontalAlignment="HorizontalAlignment.End"/>
             </PagerContent>

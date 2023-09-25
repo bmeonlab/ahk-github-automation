@@ -7,7 +7,7 @@ namespace Ahk.Review.Ui
     {
         public SubmissionInfo(string AssignmentName, string Repository, string Neptun,
                               IReadOnlyCollection<string> Branches, IReadOnlyCollection<PullRequestStatusDTO> PullRequests,
-                              WorkflowRunsStatusDTO WorkflowRuns, IReadOnlyDictionary<string, double>? points, IReadOnlyCollection<StatusEventBaseDTO> Events)
+                              WorkflowRunsStatusDTO WorkflowRuns, IReadOnlyDictionary<string, double>? points, IReadOnlyCollection<StatusEventBaseDTO> Events, bool showDetails)
         {
             this.AssignmentName = AssignmentName;
             this.Repository = Repository;
@@ -18,6 +18,7 @@ namespace Ahk.Review.Ui
             this.Grade = getGradeAsString(points);
             this.RepositoryUrl = $"https://github.com/{Repository}";
             this.Events = Events;
+            this.ShowDetails = showDetails;
         }
 
         public string AssignmentName { get; }
@@ -29,6 +30,7 @@ namespace Ahk.Review.Ui
         public string RepositoryUrl { get; }
         public string Grade { get; }
         public IReadOnlyCollection<StatusEventBaseDTO> Events { get; }
+        public bool ShowDetails { get; set; }
 
         private static string getGradeAsString(IReadOnlyDictionary<string, double>? points)
         {

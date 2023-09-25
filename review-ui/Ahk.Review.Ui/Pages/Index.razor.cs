@@ -11,6 +11,7 @@ namespace Ahk.Review.Ui.Pages
         // displayed info
         private bool loaded = false;
         private IReadOnlyCollection<SubmissionInfo> repoList = Array.Empty<SubmissionInfo>();
+        private IReadOnlyCollection<StatusEventBaseDTO> events = Array.Empty<StatusEventBaseDTO>();
         private string? message;
         private bool fetchingData;
 
@@ -84,5 +85,12 @@ namespace Ahk.Review.Ui.Pages
                 && (!filterNoPr || value.PullRequests.Count == 0)
                 && (!filterNoCiWorkflow || value.WorkflowRuns.Count == 0)
                 && (!filterNoGrade || string.IsNullOrEmpty(value.Grade));
+
+        private void ShowBtnPress(string Repository)
+        {
+            events = repoList.Where(si => si.Repository == Repository).FirstOrDefault().Events;
+            var submissionInfo = repoList.Where(si => si.Repository != Repository).FirstOrDefault();
+            submissionInfo.ShowDetails = !submissionInfo.ShowDetails;
+        }
     }
 }
