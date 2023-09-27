@@ -44,6 +44,8 @@ namespace Ahk.Review.Ui.Services
             var assignments = await GetAssignmentsAsync(subject);
             var assignment = assignments.Where(a => a.Id.ToString() == assignmentId).FirstOrDefault();
 
+            Console.WriteLine(JsonConvert.SerializeObject(assignment));
+
             return assignment;
         }
         

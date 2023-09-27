@@ -1,5 +1,8 @@
 using Ahk.Review.Ui;
 using Ahk.Review.Ui.Services;
+
+using Blazored.LocalStorage;
+
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
@@ -13,6 +16,7 @@ builder.Services.AddHttpClient("ApiClient", httpClient =>
     httpClient.BaseAddress = new Uri(builder.Configuration.GetSection("baseAddress").Value);
 });
 builder.Services.AddMudServices();
+builder.Services.AddBlazoredLocalStorage();
 
 var mapper = MapperConfig.InitializeAutomapper();
 

@@ -47,7 +47,8 @@ namespace Ahk.Review.Ui.Services
 
         public async Task UpdateGroupAsync(string subject, Group group)
         {
-            await httpClient.PostAsJsonAsync<GroupDTO>($"edit-group/{subject}", Mapper.Map<GroupDTO>(group));
+            Console.WriteLine(JsonConvert.SerializeObject(group));
+            await httpClient.PostAsJsonAsync<GroupDTO>($"edit-group", Mapper.Map<GroupDTO>(group));
         }
 
         public async Task DeleteGroupAsync(string groupId)

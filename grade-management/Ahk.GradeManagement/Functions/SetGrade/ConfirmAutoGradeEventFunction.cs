@@ -10,10 +10,10 @@ namespace Ahk.GradeManagement.SetGrade
     {
         private readonly ISetGradeService service;
         private readonly ILogger logger;
-        public ConfirmAutoGradeEventFunction(ISetGradeService service, ILogger logger)
+        public ConfirmAutoGradeEventFunction(ISetGradeService service, ILoggerFactory loggerFactory)
         {
             this.service = service;
-            this.logger = logger;
+            this.logger = loggerFactory.CreateLogger<ConfirmAutoGradeEventFunction>();
         }
 
         [Function("ConfirmAutoGradeEventFunction")]

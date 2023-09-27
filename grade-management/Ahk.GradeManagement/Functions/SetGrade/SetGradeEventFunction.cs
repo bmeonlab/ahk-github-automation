@@ -1,5 +1,7 @@
 using System;
 using System.Threading.Tasks;
+
+using Ahk.GradeManagement.Functions.Groups;
 using Ahk.GradeManagement.Services.SetGradeService;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
@@ -11,12 +13,11 @@ namespace Ahk.GradeManagement.SetGrade
         private readonly ISetGradeService service;
         private readonly ILogger logger;
 
-        public SetGradeEventFunction(ISetGradeService service, ILogger logger)
+        public SetGradeEventFunction(ISetGradeService service, ILoggerFactory loggerFactory)
         {
             this.service = service;
-            this.logger = logger;
+            this.logger = loggerFactory.CreateLogger<SetGradeEventFunction>();
         }
-            
 
         [Function("SetGradeEventFunction")]
         public async Task Run([QueueTrigger("ahksetgrade", Connection = "AHK_EventsQueueConnectionString")] SetGradeEvent data)

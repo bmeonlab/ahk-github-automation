@@ -10,6 +10,8 @@ namespace Ahk.Review.Ui.Pages.GroupPages
         private GroupService GroupService { get; set; }
         [Inject]
         private SubjectService SubjectService { get; set; }
+        [Inject]
+        private NavigationManager NavigationManager { get; set; }
 
         private string name;
         private string room;
@@ -29,6 +31,8 @@ namespace Ahk.Review.Ui.Pages.GroupPages
             };
 
             await GroupService.CreateGroupAsync(SubjectService.CurrentTenant.Id.ToString(), group);
+
+            NavigationManager.NavigateTo("/subject-details");
         }
     }
 }

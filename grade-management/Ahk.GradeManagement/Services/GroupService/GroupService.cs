@@ -91,6 +91,19 @@ namespace Ahk.GradeManagement.Services.GroupService
                 Subject = subject,
             };
 
+            var assignments = Context.Assignments.Include(a => a.Subject).Where(a => a.Subject.SubjectCode == subjectCode).ToList();
+
+            foreach (var assignment in assignments)
+            {
+                StudentAssignment studentAssignment = new StudentAssignment
+                {
+                    Student = student,
+                    Assignment = assignment,
+                };
+
+                Context.StudentAssignments.Add(studentAssignment);
+            }
+
             if (!Context.StudentSubjects.Where(ss => ss.Subject.SubjectCode == subject.SubjectCode && ss.Student.Neptun.ToLower() == student.Neptun.ToLower()).Any())
             {
                 Context.StudentSubjects.Add(studentSubject);

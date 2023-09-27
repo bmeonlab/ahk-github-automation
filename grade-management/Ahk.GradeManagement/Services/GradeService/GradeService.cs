@@ -6,6 +6,9 @@ using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Ahk.GradeManagement.Data;
 using Ahk.GradeManagement.Data.Entities;
+using Ahk.GradeManagement.ResultProcessing.Dto;
+
+using Microsoft.EntityFrameworkCore;
 
 namespace Ahk.GradeManagement.Services
 {
@@ -24,7 +27,7 @@ namespace Ahk.GradeManagement.Services
         }
         public async Task<Grade> GetLastResultOfAsync(string neptun, string gitHubRepoName, int gitHubPrNumber)
         {
-            var grades = Context.Grades
+            var grades = Context.Grades.Include(g => g.Student).Include(g => g.Assignment)
                 .Where(s => s.Student.Neptun == neptun.ToUpperInvariant() && s.GithubRepoName == gitHubRepoName.ToLowerInvariant() && s.GithubPrNumber == gitHubPrNumber)
                 .OrderByDescending(s => s.Date);
 
@@ -50,9 +53,12 @@ namespace Ahk.GradeManagement.Services
             return Context.Students.Where(s => s.Neptun == neptun).FirstOrDefault();
         }
 
-        public Assignment FindAssignment(string neptun)
+        public Assignment FindAssignment(AhkTaskResult[] results)
         {
-            return Context.StudentAssignments.Where(sa => sa.Student.Neptun == neptun).Select(sa => sa.Assignment).FirstOrDefault();
+            string firstExercise = results[0].ExerciseName;
+            var assignment = Context.Exercises.Include(e => e.Assignment).Where(e => e.Name == firstExercise).Select(e => e.Assignment).FirstOrDefault();
+
+            return assignment;
         }
 
     }

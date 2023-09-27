@@ -3,6 +3,8 @@ using Ahk.Review.Ui.Services;
 
 using Microsoft.AspNetCore.Components;
 
+using Newtonsoft.Json;
+
 namespace Ahk.Review.Ui.Pages.GroupPages
 {
     public partial class GroupDetails : ComponentBase
@@ -18,8 +20,8 @@ namespace Ahk.Review.Ui.Pages.GroupPages
         private NavigationManager NavigationManager { get; set; }
 
         private Group group;
-        private List<Student> students;
-        private List<Teacher> teachers;
+        private List<Student> students = new List<Student>();
+        private List<Teacher> teachers = new List<Teacher>();
 
         protected override async void OnInitialized()
         {

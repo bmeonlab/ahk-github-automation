@@ -1,6 +1,8 @@
 using System;
 using System.Text;
 using System.Threading.Tasks;
+using Ahk.GradeManagement.Functions.Groups;
+
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
@@ -14,10 +16,10 @@ namespace Ahk.GradeManagement.ListGrades
         private readonly IGradeListing service;
         private readonly ILogger logger;
 
-        public ListGradesFunction(IGradeListing service, ILogger logger)
+        public ListGradesFunction(IGradeListing service, ILoggerFactory loggerFactory)
         {
             this.service = service;
-            this.logger = logger;
+            this.logger = loggerFactory.CreateLogger<ListGradesFunction>();
         }
 
         [Function("list-grades")]

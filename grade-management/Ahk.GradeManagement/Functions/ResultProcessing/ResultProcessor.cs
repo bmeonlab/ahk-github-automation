@@ -33,7 +33,7 @@ namespace Ahk.GradeManagement.ResultProcessing
                 Origin = formatOrigin(value),
                 Points = GetTotalPoints(value.Result),
                 IsConfirmed = false,
-                Assignment = service.FindAssignment(value.NeptunCode)
+                Assignment = service.FindAssignment(value.Result)
             });
 
         internal static System.Collections.Generic.List<Point> GetTotalPoints(AhkTaskResult[] value)

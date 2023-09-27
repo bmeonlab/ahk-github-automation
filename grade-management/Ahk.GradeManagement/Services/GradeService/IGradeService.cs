@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Ahk.GradeManagement.Data;
 using Ahk.GradeManagement.Data.Entities;
+using Ahk.GradeManagement.ResultProcessing.Dto;
 
 namespace Ahk.GradeManagement.Services
 {
@@ -12,6 +13,6 @@ namespace Ahk.GradeManagement.Services
         Task<Grade> GetLastResultOfAsync(string neptun, string gitHubRepoName, int gitHubPrNumber);
         Task<IReadOnlyCollection<Grade>> ListConfirmedWithRepositoryPrefixAsync(string repoPrefix);
         Student FindStudentAsync(string neptun);
-        Assignment FindAssignment(string neptun);
+        Assignment FindAssignment(AhkTaskResult[] results);
     }
 }

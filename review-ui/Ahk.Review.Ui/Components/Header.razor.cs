@@ -3,6 +3,7 @@ using Ahk.Review.Ui.Services;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 using Microsoft.JSInterop;
+using Blazored.LocalStorage;
 
 namespace Ahk.Review.Ui.Components
 {
@@ -14,6 +15,8 @@ namespace Ahk.Review.Ui.Components
         private NavigationManager NavigationManager { get; set; }
         [Inject]
         private IJSRuntime JSRuntime { get; set; }
+        [Inject]
+        private ILocalStorageService LocalStorage { get; set; }
 
         private string subjectCode = string.Empty;
         private List<Subject> subjects = new List<Subject>();
@@ -24,17 +27,20 @@ namespace Ahk.Review.Ui.Components
             var results = await Service.GetSubjects();
             subjects = results.ToList();
 
-            Service.TenantCode = JSRuntime.InvokeAsync<string>("localStorage.getItem", "SelectedTenantCode").Result;
-            Service.CurrentTenant = JSRuntime.InvokeAsync<Subject>("localStorage.getItem", "SelectedTenant").Result;
+            Service.TenantCode = await LocalStorage.GetItemAsStringAsync("SelectedTenantCode");
+            Service.CurrentTenant = JsonConvert.DeserializeObject<Subject>(await LocalStorage.GetItemAsStringAsync("SelectedTenant"));
+
+            subjectCode = Service.TenantCode;
+
+            StateHasChanged();
         }
 
-        private void SetTenant()
+        private async void SetTenant()
         {
             var subject = subjects.Where(s => s.SubjectCode == subjectCode).FirstOrDefault();
             Service.SetCurrentTenant(subjectCode, subject);
-            JSRuntime.InvokeAsync<string>("localStorage.setItem", "SelectedTenantCode", subjectCode);
-            JSRuntime.InvokeAsync<string>("localStorage.setItem", "SelectedTenant", subject);
-
+            await LocalStorage.SetItemAsStringAsync("SelectedTenantCode", subjectCode);
+            await LocalStorage.SetItemAsStringAsync("SelectedTenant", JsonConvert.SerializeObject(subject));
         }
     }
 }
