@@ -50,7 +50,7 @@ namespace Ahk.Review.Ui.Pages
                 this.fetchingData = true;
                 try
                 {
-                    this.repoList = await DataService.GetData(repoPrefix, apiKey);
+                    this.repoList = await DataService.GetData(repoPrefix);
                     this.message = null;
                 }
                 catch (Exception ex)
@@ -70,7 +70,7 @@ namespace Ahk.Review.Ui.Pages
             try
             {
                 var fileName = $"{repoPrefix}-{DateTime.Now.ToString("yyyy-MM-dd-HH-mm", System.Globalization.CultureInfo.InvariantCulture)}".Replace("/", "-", StringComparison.OrdinalIgnoreCase);
-                var csvBytes = await DataService.DownloadGradesCsv(repoPrefix, apiKey);
+                var csvBytes = await DataService.DownloadGradesCsv(repoPrefix);
                 using var streamRef = new DotNetStreamReference(csvBytes);
                 await JS.InvokeVoidAsync("downloadFileFromStream", fileName, streamRef);
             }

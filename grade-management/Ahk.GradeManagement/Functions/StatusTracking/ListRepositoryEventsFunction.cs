@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace Ahk.GradeManagement.Functions.StatusTracking
 
             var events = await service.ListEventsForRepositoryAsync(prefix);
 
-            var results = events.Select(e => mapper.Map<StatusEventBaseDTO>(e)).ToList();
+            var results = mapper.Map<List<StatusEventBaseDTO>>(events);
             return new OkObjectResult(results);
 
         }

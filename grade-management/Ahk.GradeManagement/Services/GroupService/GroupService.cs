@@ -48,7 +48,7 @@ namespace Ahk.GradeManagement.Services.GroupService
 
         public async Task<List<Teacher>> ListTeachersAsync(string groupId)
         {
-            var teachersGroups = Context.TeacherGroups.Where(g => g.GroupId.ToString() == groupId).ToList();
+            var teachersGroups = Context.TeacherGroups.Include(g => g.Teacher).Where(g => g.GroupId.ToString() == groupId).ToList();
             var teachers = new List<Teacher>();
             foreach (var teacherGroup in teachersGroups)
             {
@@ -77,6 +77,13 @@ namespace Ahk.GradeManagement.Services.GroupService
 
         public async Task AddStudentToGroupAsync(string subjectCode, string groupId, Student student)
         {
+            var studentExists = Context.Students.Where(s => s.Neptun.ToLower() == student.Neptun.ToLower()).Any();
+
+            if (studentExists)
+            {
+                student = Context.Students.Where(s => s.Neptun.ToLower() == student.Neptun.ToLower()).FirstOrDefault();
+            }
+
             StudentGroup studentGroup = new StudentGroup
             {
                 Student = student,
@@ -121,6 +128,13 @@ namespace Ahk.GradeManagement.Services.GroupService
 
         public async Task AddTeacherToGroupAsync(string subjectCode, string groupId, Teacher teacher)
         {
+            var teacherExists = Context.Teachers.Where(t => t.Neptun.ToLower() == teacher.Neptun.ToLower()).Any();
+
+            if (teacherExists)
+            {
+                teacher = Context.Teachers.Where(t => t.Neptun.ToLower() == teacher.Neptun.ToLower()).FirstOrDefault();
+            }
+
             TeacherGroup teacherGroup = new TeacherGroup
             {
                 Teacher = teacher,

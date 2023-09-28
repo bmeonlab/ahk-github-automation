@@ -24,8 +24,8 @@ namespace Ahk.Review.Ui.Pages.SubjectPages
         private string semester;
         private string githubOrg;
 
-        private List<Group> groups;
-        private List<Assignment> assignments;
+        private List<Group> groups = new List<Group>();
+        private List<Assignment> assignments = new List<Assignment>();
 
         private bool firstRender = true;
 

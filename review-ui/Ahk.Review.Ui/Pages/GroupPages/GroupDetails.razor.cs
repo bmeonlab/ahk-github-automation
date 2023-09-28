@@ -2,6 +2,7 @@ using Ahk.Review.Ui.Models;
 using Ahk.Review.Ui.Services;
 
 using Microsoft.AspNetCore.Components;
+using Microsoft.JSInterop;
 
 using Newtonsoft.Json;
 
@@ -18,8 +19,10 @@ namespace Ahk.Review.Ui.Pages.GroupPages
         private SubjectService SubjectService { get; set; }
         [Inject]
         private NavigationManager NavigationManager { get; set; }
+        [Inject]
+        private IJSRuntime JSRuntime { get; set; }
 
-        private Group group;
+        private Group group = new Group();
         private List<Student> students = new List<Student>();
         private List<Teacher> teachers = new List<Teacher>();
 
@@ -39,10 +42,15 @@ namespace Ahk.Review.Ui.Pages.GroupPages
 
         private async Task RemoveTeacherFromGroup(int teacherId)
         {
-            teachers.Remove(teachers.Where(t => t.Id == teacherId).FirstOrDefault());
-            await GroupService.RemoveTeacherFromGroup(GroupId, teacherId.ToString());
+            bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to remove this teacher from the group?");
 
-            StateHasChanged();
+            if (confirmed)
+            {
+                teachers.Remove(teachers.Where(t => t.Id == teacherId).FirstOrDefault());
+                await GroupService.RemoveTeacherFromGroup(GroupId, teacherId.ToString());
+
+                StateHasChanged();
+            }
         }
 
         private void AddStudent()
@@ -52,10 +60,15 @@ namespace Ahk.Review.Ui.Pages.GroupPages
 
         private async Task RemoveStudentFromGroup(int studentId)
         {
-            students.Remove(students.Where(s => s.Id == studentId).FirstOrDefault());
-            await GroupService.RemoveStudentFromGroup(GroupId, studentId.ToString());
+            bool confirmed = await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure you want to remove this student from the group?");
 
-            StateHasChanged();
+            if (confirmed)
+            {
+                students.Remove(students.Where(s => s.Id == studentId).FirstOrDefault());
+                await GroupService.RemoveStudentFromGroup(GroupId, studentId.ToString());
+
+                StateHasChanged();
+            }
         }
     }
 }

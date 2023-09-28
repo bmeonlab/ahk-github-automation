@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ namespace Ahk.GradeManagement.Functions.Assignments
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            var results = mapper.Map<List<AssignmentDTO>>(await assignmentService.ListAsync(subject));
+            var results = mapper.Map<List<AssignmentDTO>>(await assignmentService.ListAsync(Uri.UnescapeDataString(subject)));
 
             return new OkObjectResult(results);
         }

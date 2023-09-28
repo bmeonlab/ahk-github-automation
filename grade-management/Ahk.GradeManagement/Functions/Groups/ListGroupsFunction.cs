@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -31,7 +32,7 @@ namespace Ahk.GradeManagement.Functions.Groups
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");
 
-            var results = mapper.Map<List<GroupDTO>>(await groupService.ListGroupsAsync(subject));
+            var results = mapper.Map<List<GroupDTO>>(await groupService.ListGroupsAsync(Uri.UnescapeDataString(subject)));
 
             return new OkObjectResult(results);
         }

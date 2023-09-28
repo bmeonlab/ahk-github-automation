@@ -24,16 +24,17 @@ namespace Ahk.GradeManagement.ResultProcessing
         public Task ProcessResultAsync(AhkProcessResult value, System.DateTime dateTime)
             => this.service.AddGradeAsync(new Grade()
             {
-                Student = service.FindStudentAsync(value.NeptunCode),
+                Student = service.FindStudent(value.NeptunCode),
                 GithubRepoName = value.GitHubRepoName,
                 GithubPrNumber = (int)value.GitHubPullRequestNum,
                 GithubPrUrl = new Uri(value.GitHubPullRequestNum.HasValue ? $"https://github.com/{value.GitHubRepoName}/pull/{value.GitHubPullRequestNum}" : null),
                 Date = dateTime,
                 //Actor = "grade-management-api",
                 Origin = formatOrigin(value),
-                Points = GetTotalPoints(value.Result),
+                Points = service.GetPoints(value.Result),
                 IsConfirmed = false,
-                Assignment = service.FindAssignment(value.Result)
+                Assignment = service.FindAssignment(value.Result),
+                AssignmentId = service.FindAssignmentId(value.Result),
             });
 
         internal static System.Collections.Generic.List<Point> GetTotalPoints(AhkTaskResult[] value)

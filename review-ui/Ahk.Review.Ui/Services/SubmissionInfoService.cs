@@ -3,6 +3,10 @@ using Ahk.Review.Ui.Models;
 using AutoMapper;
 using DTOs;
 
+using Microsoft.AspNetCore.Mvc;
+
+using Newtonsoft.Json;
+
 namespace Ahk.Review.Ui.Services
 {
     public class SubmissionInfoService
@@ -17,23 +21,21 @@ namespace Ahk.Review.Ui.Services
             this.Mapper = mapper;
         }
 
-        public async Task<IReadOnlyCollection<SubmissionInfo>> GetData(string repositoryPrefix, string apiKey)
+        public async Task<List<SubmissionInfo>> GetData(string repositoryPrefix)
         {
-            httpClient.DefaultRequestHeaders.Remove("x-functions-key");
-            httpClient.DefaultRequestHeaders.Add("x-functions-key", apiKey);
+            var repoStatResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-statuses/{repositoryPrefix}");
+            var gradesResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-grades/{repositoryPrefix}");
+            var eventsResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-events/{repositoryPrefix}");
 
-            var repoStat = await httpClient.GetFromJsonAsync<IReadOnlyCollection<SubmissionInfoDTO>>($"list-statuses/{repositoryPrefix}");
-            var grades = await httpClient.GetFromJsonAsync<IReadOnlyCollection<FinalStudentGrade>>($"list-grades/{repositoryPrefix}");
-            var events = await httpClient.GetFromJsonAsync<IReadOnlyCollection<StatusEventBaseDTO>>($"list-events/{repositoryPrefix}");
+            var repoStat = JsonConvert.DeserializeObject<List<SubmissionInfoDTO>>(repoStatResponse.Value.ToString());
+            var grades = JsonConvert.DeserializeObject<List<FinalStudentGrade>>(gradesResponse.Value.ToString());
+            var events = JsonConvert.DeserializeObject<List<StatusEventBaseDTO>>(eventsResponse.Value.ToString());
 
             return mergeResults(repoStat!, grades!, events!);
         }
 
-        public async Task<Stream> DownloadGradesCsv(string repositoryPrefix, string apiKey)
+        public async Task<Stream> DownloadGradesCsv(string repositoryPrefix)
         {
-            httpClient.DefaultRequestHeaders.Remove("x-functions-key");
-            httpClient.DefaultRequestHeaders.Add("x-functions-key", apiKey);
-
             using var req = new HttpRequestMessage(HttpMethod.Get, $"list-grades/{repositoryPrefix}");
             req.Headers.Remove("Accept");
             req.Headers.Add("Accept", "text/csv");
@@ -43,8 +45,9 @@ namespace Ahk.Review.Ui.Services
             return await resp.Content.ReadAsStreamAsync();
         }
 
-        private static IReadOnlyCollection<SubmissionInfo> mergeResults(IReadOnlyCollection<SubmissionInfoDTO> submissionInfoDTOs, IReadOnlyCollection<FinalStudentGrade> grades, IReadOnlyCollection<StatusEventBaseDTO> events)
+        private static List<SubmissionInfo> mergeResults(List<SubmissionInfoDTO> submissionInfoDTOs, List<FinalStudentGrade> grades, List<StatusEventBaseDTO> events)
         {
+            Console.WriteLine(JsonConvert.SerializeObject(grades));
             var gradesLookup = grades.ToDictionary(g => g.Repo);
             return submissionInfoDTOs.Select(r =>
             {

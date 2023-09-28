@@ -5,6 +5,8 @@ using DTOs;
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+
+using System.Net;
 using System.Net.Http.Json;
 
 namespace Ahk.Review.Ui.Services
@@ -28,13 +30,19 @@ namespace Ahk.Review.Ui.Services
 
         public async Task<List<Group>> GetGroupsAsync(string subject)
         {
-            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-groups/{subject}");
-            var groupDTOs = JsonConvert.DeserializeObject<List<GroupDTO>>(response.Value.ToString());
+            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-groups/{Uri.EscapeDataString(subject)}");
 
-            return groupDTOs.Select(gDTO =>
+            if (response.StatusCode == 200)
             {
-                return new Group(gDTO);
-            }).ToList();
+                var groupDTOs = JsonConvert.DeserializeObject<List<GroupDTO>>(response.Value.ToString());
+
+                return groupDTOs.Select(gDTO =>
+                {
+                    return new Group(gDTO);
+                }).ToList();
+            }
+
+            return new List<Group>();
         }
 
         public async Task<Group> GetGroupAsync(string subject, string groupId)
@@ -59,23 +67,37 @@ namespace Ahk.Review.Ui.Services
         public async Task<List<Student>> ListStudentsInGroup(string groupId)
         {
             var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-students/{groupId}");
-            var studentDTOs = JsonConvert.DeserializeObject<List<StudentDTO>>(response.Value.ToString());
 
-            return studentDTOs.Select(sDTO =>
+            if (response.StatusCode == 200)
             {
-                return new Student(sDTO);
-            }).ToList();
+                var studentDTOs = JsonConvert.DeserializeObject<List<StudentDTO>>(response.Value.ToString());
+
+                return studentDTOs.Select(sDTO =>
+                {
+                    return new Student(sDTO);
+                }).ToList();
+            }
+
+            return new List<Student>();
         }
 
         public async Task<List<Teacher>> ListTeachersInGroup(string groupId)
         {
             var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-teachers/{groupId}");
-            var teacherDTOs = JsonConvert.DeserializeObject<List<TeacherDTO>>(response.Value.ToString());
 
-            return teacherDTOs.Select(tDTO =>
+            if (response.StatusCode == 200)
             {
-                return new Teacher(tDTO);
-            }).ToList();
+                var teacherDTOs = JsonConvert.DeserializeObject<List<TeacherDTO>>(response.Value.ToString());
+
+                Console.WriteLine(JsonConvert.SerializeObject(teacherDTOs));
+
+                return teacherDTOs.Select(tDTO =>
+                {
+                    return new Teacher(tDTO);
+                }).ToList();
+            }
+
+            return new List<Teacher>();
         }
 
         public async Task RemoveTeacherFromGroup(string groupId, string teacherId)
@@ -90,12 +112,12 @@ namespace Ahk.Review.Ui.Services
 
         public async Task AddTeacherToGroup(string subject, string groupId, Teacher teacher)
         {
-            await httpClient.PostAsJsonAsync<TeacherDTO>($"add-teacher/{subject}/{groupId}", Mapper.Map<TeacherDTO>(teacher));
+            await httpClient.PostAsJsonAsync<TeacherDTO>($"add-teacher/{Uri.EscapeDataString(subject)}/{groupId}", Mapper.Map<TeacherDTO>(teacher));
         }
 
         public async Task AddStudentToGroup(string subject, string groupId, Student student)
         {
-            await httpClient.PostAsJsonAsync<StudentDTO>($"add-student/{subject}/{groupId}", Mapper.Map<StudentDTO>(student));
+            await httpClient.PostAsJsonAsync<StudentDTO>($"add-student/{Uri.EscapeDataString(subject)}/{groupId}", Mapper.Map<StudentDTO>(student));
         }
     }
 }

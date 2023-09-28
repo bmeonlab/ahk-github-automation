@@ -12,7 +12,10 @@ namespace Ahk.GradeManagement.Services
         Task AddGradeAsync(Grade value);
         Task<Grade> GetLastResultOfAsync(string neptun, string gitHubRepoName, int gitHubPrNumber);
         Task<IReadOnlyCollection<Grade>> ListConfirmedWithRepositoryPrefixAsync(string repoPrefix);
-        Student FindStudentAsync(string neptun);
+        Student FindStudent(string neptun);
         Assignment FindAssignment(AhkTaskResult[] results);
+        int FindAssignmentId(AhkTaskResult[] results);
+        List<Point> GetPoints(AhkTaskResult[] results);
+        Task UpdateGradeAsync(Grade value);
     }
 }

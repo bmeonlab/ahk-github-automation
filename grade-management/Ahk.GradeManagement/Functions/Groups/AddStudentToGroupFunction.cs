@@ -1,3 +1,4 @@
+using System;
 using System.Net;
 using System.Threading.Tasks;
 
@@ -40,7 +41,7 @@ namespace Ahk.GradeManagement.Functions.Groups
                 GithubUser = studentDTO.GithubUser,
             };
 
-            await groupService.AddStudentToGroupAsync(subject, groupId, student);
+            await groupService.AddStudentToGroupAsync(Uri.UnescapeDataString(subject), groupId, student);
 
             return new OkResult();
         }

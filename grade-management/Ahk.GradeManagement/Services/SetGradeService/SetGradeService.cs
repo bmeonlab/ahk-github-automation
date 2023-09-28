@@ -38,21 +38,8 @@ namespace Ahk.GradeManagement.Services.SetGradeService
         public async Task ConfirmAutoGradeAsync(ConfirmAutoGradeEvent data)
         {
             var previousResults = await service.GetLastResultOfAsync(neptun: Normalize.Neptun(data.Neptun), gitHubRepoName: Normalize.RepoName(data.Repository), gitHubPrNumber: data.PrNumber);
-            await service.AddGradeAsync(new Grade()
-            {
-                Id = previousResults.Id,
-                Student = previousResults.Student,
-                StudentId = previousResults.StudentId,
-                GithubPrNumber = previousResults.GithubPrNumber,
-                GithubRepoName = previousResults.GithubRepoName,
-                GithubPrUrl = previousResults.GithubPrUrl,
-                Date = System.DateTimeOffset.UtcNow,
-                Origin = previousResults.Origin,
-                Points = previousResults?.Points,
-                IsConfirmed = true,
-                Assignment = previousResults.Assignment,
-                AssignmentId = previousResults.AssignmentId
-            });
+
+            await service.UpdateGradeAsync(previousResults);
         }
 
         private static List<Point> getPoints(double[] values, ICollection<Point> previousPoints)

@@ -52,7 +52,7 @@ namespace Ahk.GradeManagement.Functions.Assignments
                 Exercises = exercises,
             };
 
-            await service.SaveAssignmentAsync(assignment, subject);
+            await service.SaveAssignmentAsync(assignment, Uri.UnescapeDataString(subject));
             return new OkResult();
         }
     }

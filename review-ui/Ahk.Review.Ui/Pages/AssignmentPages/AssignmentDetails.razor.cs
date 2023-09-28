@@ -15,9 +15,9 @@ namespace Ahk.Review.Ui.Pages.AssignmentPages
         [Inject]
         private SubjectService SubjectService { get; set; }
 
-        private Assignment assignment;
+        private Assignment assignment = new Assignment();
         private string subjectName;
-        private List<Exercise> exerciseList;
+        private List<Exercise> exerciseList = new List<Exercise>();
 
         protected override async void OnInitialized()
         {

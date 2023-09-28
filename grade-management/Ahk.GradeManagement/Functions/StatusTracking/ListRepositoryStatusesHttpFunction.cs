@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Ahk.GradeManagement.Functions.StatusTracking;
@@ -26,14 +27,14 @@ namespace Ahk.GradeManagement.StatusTracking
 
         [Function("list-statuses")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "list-statuses/{*repoprefix}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "list-statuses/{*repoprefix}")] HttpRequest req,
             string repoprefix)
         {
             logger.LogInformation($"Received request to list statuses with prefix: {repoprefix}");
 
             var infos = await service.ListStatusForRepositoriesAsync(repoprefix);
 
-            var results = infos.Select(info => mapper.Map<SubmissionInfoDTO>(info)).ToList();
+            var results = mapper.Map<List<SubmissionInfoDTO>>(infos);
             return new OkObjectResult(results);
         }
     }

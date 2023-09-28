@@ -6,8 +6,8 @@ namespace Ahk.Review.Ui
     public class SubmissionInfo
     {
         public SubmissionInfo(string AssignmentName, string Repository, string Neptun,
-                              IReadOnlyCollection<string> Branches, IReadOnlyCollection<PullRequestStatusDTO> PullRequests,
-                              WorkflowRunsStatusDTO WorkflowRuns, IReadOnlyDictionary<string, double>? points, IReadOnlyCollection<StatusEventBaseDTO> Events, bool showDetails)
+                              List<string> Branches, List<PullRequestStatusDTO> PullRequests,
+                              WorkflowRunsStatusDTO WorkflowRuns, IReadOnlyDictionary<string, double>? points, List<StatusEventBaseDTO> Events, bool showDetails)
         {
             this.AssignmentName = AssignmentName;
             this.Repository = Repository;
@@ -21,15 +21,15 @@ namespace Ahk.Review.Ui
             this.ShowDetails = showDetails;
         }
 
-        public string AssignmentName { get; }
-        public string Repository { get; }
-        public string Neptun { get; }
-        public IReadOnlyCollection<string> Branches { get; }
-        public IReadOnlyCollection<PullRequestStatusDTO> PullRequests { get; }
-        public WorkflowRunsStatusDTO WorkflowRuns { get; }
-        public string RepositoryUrl { get; }
-        public string Grade { get; }
-        public IReadOnlyCollection<StatusEventBaseDTO> Events { get; }
+        public string AssignmentName { get; set; }
+        public string Repository { get; set; }
+        public string Neptun { get; set; }
+        public List<string> Branches { get; set; }
+        public List<PullRequestStatusDTO> PullRequests { get; set; }
+        public WorkflowRunsStatusDTO WorkflowRuns { get; set; }
+        public string RepositoryUrl { get; set; }
+        public string Grade { get; set; }
+        public List<StatusEventBaseDTO> Events { get; set; }
         public bool ShowDetails { get; set; }
 
         private static string getGradeAsString(IReadOnlyDictionary<string, double>? points)

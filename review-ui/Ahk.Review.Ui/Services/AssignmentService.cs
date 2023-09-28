@@ -19,18 +19,20 @@ namespace Ahk.Review.Ui.Services
             this.Mapper = mapper;
         }
 
-        public async Task CreateAssingmentAsync(Assignment assignment, List<Exercise> exercises)
+        public async Task CreateAssingmentAsync(string subject, Assignment assignment, List<Exercise> exercises)
         {
             var assignmentDTO = Mapper.Map<AssignmentDTO>(assignment);
             var exercisesDTO = Mapper.Map<List<ExerciseDTO>>(exercises);
             assignmentDTO.Exercises = exercisesDTO;
 
-            await httpClient.PostAsJsonAsync($"create-assignment", assignmentDTO);
+            Console.WriteLine(JsonConvert.SerializeObject(assignmentDTO));
+
+            await httpClient.PostAsJsonAsync($"create-assignment/{Uri.EscapeDataString(subject)}", assignmentDTO);
         }
 
         public async Task<List<Assignment>> GetAssignmentsAsync(string subject)
         {
-            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-assignments/{subject}");
+            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-assignments/{Uri.EscapeDataString(subject)}");
             var assignmentDTOs = JsonConvert.DeserializeObject<List<AssignmentDTO>>(response.Value.ToString());
 
             return assignmentDTOs.Select(aDTO =>
@@ -51,7 +53,7 @@ namespace Ahk.Review.Ui.Services
         
         public async Task<List<Exercise>> GetExercisesAsync(string subject, string assignmentId)
         {
-            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-exercises/{subject}/{assignmentId}");
+            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-exercises/{Uri.EscapeDataString(subject)}/{assignmentId}");
             var exerciseDTOs = JsonConvert.DeserializeObject<List<ExerciseDTO>>(response.Value.ToString());
 
             return exerciseDTOs.Select(eDTO =>

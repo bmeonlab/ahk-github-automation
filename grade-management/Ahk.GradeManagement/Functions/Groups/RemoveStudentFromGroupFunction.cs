@@ -22,7 +22,7 @@ namespace Ahk.GradeManagement.Functions.Groups
         }
 
         [Function("remove-student")]
-        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "remove-student/{group}/{studentId}")] HttpRequestData req,
+        public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "delete", Route = "remove-student/{groupId}/{studentId}")] HttpRequestData req,
             string groupId, string studentId)
         {
             _logger.LogInformation("C# HTTP trigger function processed a request.");

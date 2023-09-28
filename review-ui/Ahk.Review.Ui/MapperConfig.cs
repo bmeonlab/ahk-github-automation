@@ -14,7 +14,8 @@ namespace Ahk.Review.Ui
                 cfg.CreateMap<Exercise, ExerciseDTO>();
                 cfg.CreateMap<Group, GroupDTO>();
                 cfg.CreateMap<Student, StudentDTO>();
-                cfg.CreateMap<TeacherDTO, TeacherDTO>();
+                cfg.CreateMap<Teacher, TeacherDTO>();
+                cfg.CreateMap<Subject, SubjectDTO>();
             });
 
             var mapper = new Mapper(config);

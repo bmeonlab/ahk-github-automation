@@ -8,12 +8,12 @@ namespace DTOs
 {
     public class SubmissionInfoDTO
     {
-        public string Repository { get; }
-        public string Neptun { get; }
-        public IReadOnlyCollection<string> Branches { get; }
-        public IReadOnlyCollection<PullRequestStatusDTO> PullRequests { get; }
-        public WorkflowRunsStatusDTO WorkflowRuns { get; }
-        public string RepositoryUrl { get; }
-        public string Grade { get; }
+        public string Repository { get; set; }
+        public string Neptun { get; set; }
+        public List<string> Branches { get; set; }
+        public List<PullRequestStatusDTO> PullRequests { get; set; }
+        public WorkflowRunsStatusDTO WorkflowRuns { get; set; }
+        public string RepositoryUrl { get; set; }
+        public string Grade { get; set; }
     }
 }

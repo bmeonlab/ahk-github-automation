@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Ahk.GradeManagement.Functions.Groups;
@@ -6,6 +7,7 @@ using Ahk.GradeManagement.Functions.Groups;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Net.Http.Headers;
 
@@ -24,12 +26,12 @@ namespace Ahk.GradeManagement.ListGrades
 
         [Function("list-grades")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Admin, "get", Route = "list-grades/{*repoprefix}")] HttpRequest req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "list-grades/{*repoprefix}")] HttpRequestData req,
             string repoprefix)
         {
             logger.LogInformation($"Received request to list grades with prefix: {repoprefix}");
 
-            var acceptHeader = req.Headers.GetValueOrDefault(HeaderNames.Accept);
+            var acceptHeader = req.Headers.GetValues(HeaderNames.Accept).First();
             var results = await service.List(repoprefix);
 
             if (acceptHeader.Equals("text/csv", StringComparison.OrdinalIgnoreCase))

@@ -2,6 +2,8 @@ using Ahk.Review.Ui.Models;
 using Ahk.Review.Ui.Services;
 using Microsoft.AspNetCore.Components;
 
+using System.ComponentModel.DataAnnotations;
+
 namespace Ahk.Review.Ui.Pages.AssignmentPages
 {
     public partial class CreateAssignment : ComponentBase
@@ -14,6 +16,7 @@ namespace Ahk.Review.Ui.Pages.AssignmentPages
         private NavigationManager NavigationManager { get; set; }
 
         private string assignmentName;
+        [Url]
         private string classroomAssignment;
         private DateTime? date;
         private TimeSpan? time;
@@ -39,7 +42,7 @@ namespace Ahk.Review.Ui.Pages.AssignmentPages
                 SubjectId = SubjectService.CurrentTenant.Id,
             };
 
-            await AssignmentService.CreateAssingmentAsync(assignment, exercises);
+            await AssignmentService.CreateAssingmentAsync(SubjectService.TenantCode, assignment, exercises);
             NavigationManager.NavigateTo("/subject-details");
         }
 
@@ -52,6 +55,10 @@ namespace Ahk.Review.Ui.Pages.AssignmentPages
             };
 
             exercises.Add(exercise);
+
+            exerciseName = "";
+            availablePoints = "";
+
             StateHasChanged();
         }
     }

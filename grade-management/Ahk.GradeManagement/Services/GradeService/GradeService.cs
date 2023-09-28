@@ -25,6 +25,16 @@ namespace Ahk.GradeManagement.Services
             Context.Grades.Add(value);
             await Context.SaveChangesAsync();
         }
+
+        public async Task UpdateGradeAsync(Grade grade)
+        {
+            var oldGrade = Context.Grades.Find(grade.Id);
+            oldGrade.IsConfirmed = true;
+            oldGrade.Date = DateTimeOffset.UtcNow;
+
+            await Context.SaveChangesAsync();
+        }
+
         public async Task<Grade> GetLastResultOfAsync(string neptun, string gitHubRepoName, int gitHubPrNumber)
         {
             var grades = Context.Grades.Include(g => g.Student).Include(g => g.Assignment)
@@ -48,7 +58,7 @@ namespace Ahk.GradeManagement.Services
             await Context.SaveChangesAsync();
         }
 
-        public Student FindStudentAsync(string neptun)
+        public Student FindStudent(string neptun)
         {
             return Context.Students.Where(s => s.Neptun == neptun).FirstOrDefault();
         }
@@ -56,9 +66,33 @@ namespace Ahk.GradeManagement.Services
         public Assignment FindAssignment(AhkTaskResult[] results)
         {
             string firstExercise = results[0].ExerciseName;
-            var assignment = Context.Exercises.Include(e => e.Assignment).Where(e => e.Name == firstExercise).Select(e => e.Assignment).FirstOrDefault();
+            string firstTask = results[0].TaskName;
+            var assignment = Context.Assignments.Include(a => a.Exercises).Where(a => a.Exercises.First().Name == firstExercise || a.Exercises.First().Name == firstTask).FirstOrDefault();
 
             return assignment;
+        }
+
+        public int FindAssignmentId(AhkTaskResult[] results)
+        {
+            return FindAssignment(results).Id;
+        }
+
+        public List<Point> GetPoints(AhkTaskResult[] results)
+        {
+            var points = new List<Point>();
+
+            foreach (var result in results)
+            {
+                var point = new Point()
+                {
+                    Exercise = Context.Exercises.Where(e => e.Name == result.ExerciseName || e.Name == result.TaskName).FirstOrDefault(),
+                    PointEarned = result.Points,
+                };
+
+                points.Add(point);
+            }
+
+            return points;
         }
 
     }
