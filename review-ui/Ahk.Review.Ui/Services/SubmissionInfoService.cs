@@ -21,10 +21,10 @@ namespace Ahk.Review.Ui.Services
             this.Mapper = mapper;
         }
 
-        public async Task<List<SubmissionInfo>> GetData(string repositoryPrefix)
+        public async Task<List<SubmissionInfo>> GetData(string subject, string repositoryPrefix)
         {
             var repoStatResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-statuses/{repositoryPrefix}");
-            var gradesResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-grades/{repositoryPrefix}");
+            var gradesResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-grades/{Uri.EscapeDataString(subject)}/{repositoryPrefix}");
             var eventsResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-events/{repositoryPrefix}");
 
             var repoStat = JsonConvert.DeserializeObject<List<SubmissionInfoDTO>>(repoStatResponse.Value.ToString());
@@ -47,7 +47,11 @@ namespace Ahk.Review.Ui.Services
 
         private static List<SubmissionInfo> mergeResults(List<SubmissionInfoDTO> submissionInfoDTOs, List<FinalStudentGrade> grades, List<StatusEventBaseDTO> events)
         {
-            Console.WriteLine(JsonConvert.SerializeObject(grades));
+            if (submissionInfoDTOs.FirstOrDefault() == null || grades.FirstOrDefault() == null || events.FirstOrDefault() == null)
+            {
+                return new List<SubmissionInfo>();
+            }
+
             var gradesLookup = grades.ToDictionary(g => g.Repo);
             return submissionInfoDTOs.Select(r =>
             {

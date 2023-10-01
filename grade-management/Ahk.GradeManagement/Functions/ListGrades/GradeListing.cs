@@ -12,9 +12,9 @@ namespace Ahk.GradeManagement.ListGrades
         public GradeListing(IGradeService service)
             => this.service = service;
 
-        public async Task<IReadOnlyCollection<FinalStudentGrade>> List(string repoPrefix)
+        public async Task<IReadOnlyCollection<FinalStudentGrade>> List(string subject, string repoPrefix)
         {
-            var items = await this.service.ListConfirmedWithRepositoryPrefixAsync(Normalize.RepoName(repoPrefix));
+            var items = await this.service.ListConfirmedWithRepositoryPrefixAsync(subject, Normalize.RepoName(repoPrefix));
             var finalResults = new List<FinalStudentGrade>();
             foreach (var student in items.GroupBy(r => Normalize.Neptun(r.Student.Neptun)))
             {

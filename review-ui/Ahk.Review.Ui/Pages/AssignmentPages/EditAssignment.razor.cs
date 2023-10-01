@@ -26,6 +26,7 @@ namespace Ahk.Review.Ui.Pages.AssignmentPages
 
         protected override async void OnInitialized()
         {
+            Subject = Uri.UnescapeDataString(Subject);
             assignment = await AssignmentService.GetAssignmentAsync(Subject, AssignmentId);
             classroomAssignment = assignment.ClassroomAssignment.ToString();
             date = assignment.DeadLine.Date;

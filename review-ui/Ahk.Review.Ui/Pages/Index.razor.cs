@@ -3,6 +3,7 @@ using Ahk.Review.Ui.Services;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using DTOs;
+using Newtonsoft.Json;
 
 namespace Ahk.Review.Ui.Pages
 {
@@ -50,7 +51,8 @@ namespace Ahk.Review.Ui.Pages
                 this.fetchingData = true;
                 try
                 {
-                    this.repoList = await DataService.GetData(repoPrefix);
+                    this.repoList = await DataService.GetData(SubjectService.TenantCode, repoPrefix);
+                    Console.WriteLine(JsonConvert.SerializeObject(this.repoList));
                     this.message = null;
                 }
                 catch (Exception ex)
@@ -88,8 +90,11 @@ namespace Ahk.Review.Ui.Pages
 
         private void ShowBtnPress(string Repository)
         {
-            events = repoList.Where(si => si.Repository == Repository).FirstOrDefault().Events;
-            var submissionInfo = repoList.Where(si => si.Repository != Repository).FirstOrDefault();
+            var submissionInfo = repoList.Where(si => si.Repository == Repository).FirstOrDefault();
+            events = submissionInfo.Events;
+
+            Console.WriteLine(JsonConvert.SerializeObject(events));
+
             submissionInfo.ShowDetails = !submissionInfo.ShowDetails;
         }
     }

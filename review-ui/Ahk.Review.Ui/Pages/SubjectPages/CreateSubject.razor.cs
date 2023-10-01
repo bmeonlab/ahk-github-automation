@@ -30,7 +30,7 @@ namespace Ahk.Review.Ui.Pages.SubjectPages
 
             await SubjectService.CreateSubjectAsync(subject);
 
-            NavigationManager.NavigateTo("/");
+            NavigationManager.NavigateTo("/", true);
         }
     }
 }

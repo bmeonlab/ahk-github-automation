@@ -12,7 +12,7 @@ namespace DTOs
         public string Repository { get; set; }
 
 
-        public string Type { get; }
+        public string Type { get; set; }
         public DateTime Timestamp { get; set; }
     }
 }

@@ -43,10 +43,10 @@ namespace Ahk.GradeManagement.Services
 
             return grades.FirstOrDefault();
         }
-        public async Task<IReadOnlyCollection<Grade>> ListConfirmedWithRepositoryPrefixAsync(string repoPrefix)
+        public async Task<IReadOnlyCollection<Grade>> ListConfirmedWithRepositoryPrefixAsync(string subject, string repoPrefix)
         {
-            var confirmedGrades = Context.Grades
-                .Where(s => s.IsConfirmed && s.GithubRepoName.StartsWith(repoPrefix));
+            var confirmedGrades = Context.Grades.Include(g => g.Student).Include(g => g.Assignment).ThenInclude(a => a.Subject).Include(g => g.Points).ThenInclude(p => p.Exercise)
+                .Where(s => s.IsConfirmed && s.GithubRepoName.StartsWith(repoPrefix) && s.Assignment.Subject.SubjectCode == subject);
             return confirmedGrades.ToList().AsReadOnly();
         }
 

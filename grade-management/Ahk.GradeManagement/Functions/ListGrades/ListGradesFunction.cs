@@ -26,13 +26,14 @@ namespace Ahk.GradeManagement.ListGrades
 
         [Function("list-grades")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "list-grades/{*repoprefix}")] HttpRequestData req,
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "list-grades/{subject}/{*repoprefix}")] HttpRequestData req, string subject,
             string repoprefix)
         {
             logger.LogInformation($"Received request to list grades with prefix: {repoprefix}");
 
             var acceptHeader = req.Headers.GetValues(HeaderNames.Accept).First();
-            var results = await service.List(repoprefix);
+            subject = Uri.UnescapeDataString(subject);
+            var results = await service.List(subject, repoprefix);
 
             if (acceptHeader.Equals("text/csv", StringComparison.OrdinalIgnoreCase))
                 return new FileContentResult(Encoding.UTF8.GetBytes(CsvExporter.GetCsv(results)), "text/csv; charset=utf-8");

@@ -109,7 +109,7 @@ namespace Ahk.Review.Ui.Pages.SubjectPages
 
         private void EditAssignment(int assignmentId)
         {
-            NavigationManager.NavigateTo($"/edit-assignment/{SubjectService.TenantCode}/{assignmentId}");
+            NavigationManager.NavigateTo($"/edit-assignment/{Uri.EscapeDataString(SubjectService.TenantCode)}/{assignmentId}");
         }
 
         private async Task DeleteAssignment(int assignmentId)
