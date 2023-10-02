@@ -17,7 +17,7 @@ namespace Ahk.GradeManagement.Data.Entities
 
         public int SubjectId { get; set; }
         public Subject Subject { get; set; }
-        public Grade Grade { get; set; }
+        public ICollection<Grade> Grades { get; set; }
         public ICollection<StudentAssignment> StudentAssignments { get; set; }
 
     }

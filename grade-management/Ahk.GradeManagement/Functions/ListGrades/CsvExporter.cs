@@ -13,7 +13,7 @@ namespace Ahk.GradeManagement.ListGrades
 
             var str = new StringBuilder();
 
-            var values = new List<string>() { "Neptun", "GitHubRepo", "GitHubPr" };
+            var values = new List<string>() { "Assignment", "Neptun", "GitHubRepo", "GitHubPr" };
             values.AddRange(exNames);
 
             str.AppendLine(formatLine(values));
@@ -22,6 +22,7 @@ namespace Ahk.GradeManagement.ListGrades
             {
                 values.Clear();
 
+                values.Add(r.AssignmentName);
                 values.Add(r.Neptun.ToUpperInvariant());
                 values.Add(r.Repo);
                 values.Add(r.PrUrl);

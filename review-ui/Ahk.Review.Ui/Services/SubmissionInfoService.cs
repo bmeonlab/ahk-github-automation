@@ -34,9 +34,9 @@ namespace Ahk.Review.Ui.Services
             return mergeResults(repoStat!, grades!, events!);
         }
 
-        public async Task<Stream> DownloadGradesCsv(string repositoryPrefix)
+        public async Task<Stream> DownloadGradesCsv(string subject, string repositoryPrefix)
         {
-            using var req = new HttpRequestMessage(HttpMethod.Get, $"list-grades/{repositoryPrefix}");
+            using var req = new HttpRequestMessage(HttpMethod.Get, $"list-grades/{Uri.EscapeDataString(subject)}/{repositoryPrefix}");
             req.Headers.Remove("Accept");
             req.Headers.Add("Accept", "text/csv");
             var resp = await httpClient.SendAsync(req);

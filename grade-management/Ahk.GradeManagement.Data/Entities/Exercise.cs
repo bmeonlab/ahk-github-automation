@@ -17,6 +17,6 @@ namespace Ahk.GradeManagement.Data.Entities
 
         public int AssignmentId { get; set; }
         public Assignment Assignment { get; set; }
-        public Point? Point { get; set; }
+        public ICollection<Point?> Points { get; set; }
     }
 }

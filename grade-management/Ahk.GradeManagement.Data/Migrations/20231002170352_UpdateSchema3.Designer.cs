@@ -4,6 +4,7 @@ using Ahk.GradeManagement.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Ahk.GradeManagement.Data.Migrations
 {
     [DbContext(typeof(AhkDbContext))]
-    partial class AhkDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231002170352_UpdateSchema3")]
+    partial class UpdateSchema3
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -182,7 +185,8 @@ namespace Ahk.GradeManagement.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("ExerciseId");
+                    b.HasIndex("ExerciseId")
+                        .IsUnique();
 
                     b.HasIndex("GradeId");
 
@@ -549,8 +553,8 @@ namespace Ahk.GradeManagement.Data.Migrations
             modelBuilder.Entity("Ahk.GradeManagement.Data.Entities.Point", b =>
                 {
                     b.HasOne("Ahk.GradeManagement.Data.Entities.Exercise", "Exercise")
-                        .WithMany("Points")
-                        .HasForeignKey("ExerciseId")
+                        .WithOne("Point")
+                        .HasForeignKey("Ahk.GradeManagement.Data.Entities.Point", "ExerciseId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -680,7 +684,7 @@ namespace Ahk.GradeManagement.Data.Migrations
 
             modelBuilder.Entity("Ahk.GradeManagement.Data.Entities.Exercise", b =>
                 {
-                    b.Navigation("Points");
+                    b.Navigation("Point");
                 });
 
             modelBuilder.Entity("Ahk.GradeManagement.Data.Entities.Grade", b =>

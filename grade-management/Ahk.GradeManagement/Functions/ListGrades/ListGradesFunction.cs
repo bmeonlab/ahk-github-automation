@@ -26,8 +26,7 @@ namespace Ahk.GradeManagement.ListGrades
 
         [Function("list-grades")]
         public async Task<IActionResult> Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "list-grades/{subject}/{*repoprefix}")] HttpRequestData req, string subject,
-            string repoprefix)
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "list-grades/{subject}/{repoprefix}")] HttpRequestData req, string subject, string repoprefix)
         {
             logger.LogInformation($"Received request to list grades with prefix: {repoprefix}");
 

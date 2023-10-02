@@ -35,6 +35,8 @@ namespace Ahk.GradeManagement.Services
             await Context.SaveChangesAsync();
         }
 
+        //public async Task SetGradeAsync()
+
         public async Task<Grade> GetLastResultOfAsync(string neptun, string gitHubRepoName, int gitHubPrNumber)
         {
             var grades = Context.Grades.Include(g => g.Student).Include(g => g.Assignment)
