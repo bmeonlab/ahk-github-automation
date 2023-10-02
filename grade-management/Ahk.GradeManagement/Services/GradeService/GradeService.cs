@@ -7,6 +7,9 @@ using System.Threading.Tasks;
 using Ahk.GradeManagement.Data;
 using Ahk.GradeManagement.Data.Entities;
 using Ahk.GradeManagement.ResultProcessing.Dto;
+using Ahk.GradeManagement.SetGrade;
+
+using Google.Protobuf.WellKnownTypes;
 
 using Microsoft.EntityFrameworkCore;
 
@@ -35,11 +38,18 @@ namespace Ahk.GradeManagement.Services
             await Context.SaveChangesAsync();
         }
 
-        //public async Task SetGradeAsync()
+        public async Task SetGradeAsync(SetGradeEvent data, Grade grade)
+        {
+            var oldGrade = Context.Grades.Find(grade.Id);
+            oldGrade.IsConfirmed = true;
+            oldGrade.Points = GetPointsForSetGrade(data.Results, grade?.Points);
+
+            await Context.SaveChangesAsync();
+        }
 
         public async Task<Grade> GetLastResultOfAsync(string neptun, string gitHubRepoName, int gitHubPrNumber)
         {
-            var grades = Context.Grades.Include(g => g.Student).Include(g => g.Assignment)
+            var grades = Context.Grades.Include(g => g.Student).Include(g => g.Assignment).Include(g => g.Points)
                 .Where(s => s.Student.Neptun == neptun.ToUpperInvariant() && s.GithubRepoName == gitHubRepoName.ToLowerInvariant() && s.GithubPrNumber == gitHubPrNumber)
                 .OrderByDescending(s => s.Date);
 
@@ -95,6 +105,29 @@ namespace Ahk.GradeManagement.Services
             }
 
             return points;
+        }
+
+        private static List<Point> GetPointsForSetGrade(double[] values, ICollection<Point> previousPoints)
+        {
+            for (var i = 0; i < values.Length; i++)
+            {
+                var exercise = new Exercise() { Name = $"ex{i}" };
+                if (previousPoints != null && previousPoints.Count > i)
+                {
+                    previousPoints.ElementAt(i).PointEarned = values[i];
+                }
+                else
+                {
+                    var p = new Point()
+                    {
+                        PointEarned = values[i],
+                        Exercise = exercise,
+                    };
+                    previousPoints.Add(p);
+                }
+            }
+
+            return previousPoints.ToList();
         }
 
     }

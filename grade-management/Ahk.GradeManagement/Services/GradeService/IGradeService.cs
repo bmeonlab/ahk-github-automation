@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Ahk.GradeManagement.Data;
 using Ahk.GradeManagement.Data.Entities;
 using Ahk.GradeManagement.ResultProcessing.Dto;
+using Ahk.GradeManagement.SetGrade;
 
 namespace Ahk.GradeManagement.Services
 {
@@ -17,5 +18,6 @@ namespace Ahk.GradeManagement.Services
         int FindAssignmentId(AhkTaskResult[] results);
         List<Point> GetPoints(AhkTaskResult[] results);
         Task UpdateGradeAsync(Grade value);
+        Task SetGradeAsync(SetGradeEvent data, Grade grade);
     }
 }

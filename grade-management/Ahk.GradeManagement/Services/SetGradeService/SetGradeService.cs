@@ -18,21 +18,7 @@ namespace Ahk.GradeManagement.Services.SetGradeService
         {
             var previousResults = await service.GetLastResultOfAsync(neptun: Normalize.Neptun(data.Neptun), gitHubRepoName: Normalize.RepoName(data.Repository), gitHubPrNumber: data.PrNumber);
 
-            await service.AddGradeAsync(new Grade()
-            {
-                Id = previousResults.Id,
-                Student = previousResults.Student,
-                StudentId = previousResults.StudentId,
-                GithubRepoName = previousResults.GithubRepoName,
-                GithubPrNumber = previousResults.GithubPrNumber,
-                GithubPrUrl = previousResults.GithubPrUrl,
-                Date = previousResults.Date,
-                Origin = previousResults.Origin,
-                Points = getPoints(data.Results, previousResults?.Points),
-                IsConfirmed = true,
-                Assignment = previousResults.Assignment,
-                AssignmentId = previousResults.AssignmentId
-            });
+            await service.SetGradeAsync(data, previousResults);
         }
 
         public async Task ConfirmAutoGradeAsync(ConfirmAutoGradeEvent data)
@@ -40,26 +26,6 @@ namespace Ahk.GradeManagement.Services.SetGradeService
             var previousResults = await service.GetLastResultOfAsync(neptun: Normalize.Neptun(data.Neptun), gitHubRepoName: Normalize.RepoName(data.Repository), gitHubPrNumber: data.PrNumber);
 
             await service.UpdateGradeAsync(previousResults);
-        }
-
-        private static List<Point> getPoints(double[] values, ICollection<Point> previousPoints)
-        {
-            var value = new List<Point>(capacity: values.Length);
-            for (var i = 0; i < values.Length; i++)
-            {
-                var exercise = new Exercise() { Name = $"ex{i}" };
-                if (previousPoints != null && previousPoints.Count > i)
-                    exercise = previousPoints.ElementAt(i).Exercise;
-                var p = new Point()
-                {
-                    PointEarned = values[i],
-                    Exercise = exercise,
-                };
-
-                value.Add(p);
-            }
-
-            return value;
         }
     }
 }
