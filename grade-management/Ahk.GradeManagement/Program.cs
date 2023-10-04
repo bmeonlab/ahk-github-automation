@@ -16,6 +16,7 @@ using Ahk.GradeManagement.Services.SetGradeService;
 using Ahk.GradeManagement.Services.StatusTrackingService;
 using Ahk.GradeManagement.Helpers;
 using Ahk.GradeManagement.Services.SubjectService;
+using Microsoft.Extensions.Configuration;
 
 namespace Ahk.GradeManagement
 {
@@ -48,7 +49,10 @@ namespace Ahk.GradeManagement
 
                     services.AddSingleton(mapper);
 
-                    string azureSqlConnString = Environment.GetEnvironmentVariable("SQLAZURECONNSTR_AHK_ConnString");
+                    var configuration = services.BuildServiceProvider().GetService<IConfiguration>();
+                    var connString = configuration.GetConnectionString("SQLAZURECONNSTR_AHK_ConnString");
+
+                    string azureSqlConnString = string.IsNullOrEmpty(connString) ? Environment.GetEnvironmentVariable("SQLAZURECONNSTR_AHK_ConnString") : connString;
 
                     services.AddDbContext<AhkDbContext>(options => options.UseSqlServer(azureSqlConnString));
                 })
