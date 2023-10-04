@@ -92,8 +92,6 @@ namespace Ahk.Review.Ui.Pages
             var submissionInfo = repoList.Where(si => si.Repository == Repository).FirstOrDefault();
             events = submissionInfo.Events;
 
-            Console.WriteLine(JsonConvert.SerializeObject(events));
-
             submissionInfo.ShowDetails = !submissionInfo.ShowDetails;
         }
     }

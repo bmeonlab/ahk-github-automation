@@ -6,6 +6,7 @@ using DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace Ahk.Review.Ui.Services
 {
@@ -42,7 +43,16 @@ namespace Ahk.Review.Ui.Services
             var resp = await httpClient.SendAsync(req);
             resp.EnsureSuccessStatusCode();
 
-            return await resp.Content.ReadAsStreamAsync();
+            var result = await resp.Content.ReadAsStringAsync();
+
+            JObject jsonObject = JObject.Parse(result);
+
+            string base64FileContent = (string)jsonObject["FileContents"];
+            byte[] fileContent = Convert.FromBase64String(base64FileContent);
+
+            Console.WriteLine(base64FileContent);
+
+            return new MemoryStream(fileContent);
         }
 
         private static List<SubmissionInfo> mergeResults(List<SubmissionInfoDTO> submissionInfoDTOs, List<FinalStudentGrade> grades, List<StatusEventBaseDTO> events)
