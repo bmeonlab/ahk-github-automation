@@ -54,23 +54,23 @@ namespace Ahk.GradeManagement
                 })
                 .Build();
 
-            using (var context = new AhkDbContextFactory().CreateDbContext(args))
-            {
-                context.Database.EnsureCreated();
-                var token = context.WebhookTokens.FirstOrDefault();
-                if (token == null)
-                {
-                    var id = Guid.NewGuid().ToString("N");
-                    var secret = Guid.NewGuid().ToString("N");
-                    var webHookToken = new WebhookToken() { Id = id, Secret = secret };
-                    context.WebhookTokens.Add(webHookToken);
-                    context.SaveChanges();
-                }
+            //using (var context = new AhkDbContextFactory().CreateDbContext(args))
+            //{
+            //    context.Database.EnsureCreated();
+            //    var token = context.WebhookTokens.FirstOrDefault();
+            //    if (token == null)
+            //    {
+            //        var id = Guid.NewGuid().ToString("N");
+            //        var secret = Guid.NewGuid().ToString("N");
+            //        var webHookToken = new WebhookToken() { Id = id, Secret = secret };
+            //        context.WebhookTokens.Add(webHookToken);
+            //        context.SaveChanges();
+            //    }
 
-                SampleDataSeeder seeder = new SampleDataSeeder(context);
-                //seeder.ClearData();
-                //seeder.SeedData();
-            }
+            //    SampleDataSeeder seeder = new SampleDataSeeder(context);
+            //    //seeder.ClearData();
+            //    //seeder.SeedData();
+            //}
 
             await host.RunAsync();
         }
