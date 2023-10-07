@@ -5,6 +5,7 @@
         <RootNamespace>Ahk.GradeManagement</RootNamespace>
         <PublishReadyToRun>true</PublishReadyToRun>
         <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
+        <SkipFunctionsDepsCopy>true</SkipFunctionsDepsCopy>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
