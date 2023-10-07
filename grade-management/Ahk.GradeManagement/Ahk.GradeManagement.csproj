@@ -3,7 +3,6 @@
         <TargetFramework>net7.0</TargetFramework>
         <AzureFunctionsVersion>v4</AzureFunctionsVersion>
         <RootNamespace>Ahk.GradeManagement</RootNamespace>
-        <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
         <PublishReadyToRun>true</PublishReadyToRun>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <OutputType>Exe</OutputType>
