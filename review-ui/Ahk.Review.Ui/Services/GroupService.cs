@@ -30,7 +30,8 @@ namespace Ahk.Review.Ui.Services
 
         public async Task<List<Group>> GetGroupsAsync(string subject)
         {
-            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-groups/{Uri.EscapeDataString(subject)}");
+            subject = Uri.EscapeDataString(Uri.EscapeDataString(subject));
+            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-groups/{subject}");
 
             if (response.StatusCode == 200)
             {
@@ -112,12 +113,14 @@ namespace Ahk.Review.Ui.Services
 
         public async Task AddTeacherToGroup(string subject, string groupId, Teacher teacher)
         {
-            await httpClient.PostAsJsonAsync<TeacherDTO>($"add-teacher/{Uri.EscapeDataString(subject)}/{groupId}", Mapper.Map<TeacherDTO>(teacher));
+            subject = Uri.EscapeDataString(Uri.EscapeDataString(subject));
+            await httpClient.PostAsJsonAsync<TeacherDTO>($"add-teacher/{subject}/{groupId}", Mapper.Map<TeacherDTO>(teacher));
         }
 
         public async Task AddStudentToGroup(string subject, string groupId, Student student)
         {
-            await httpClient.PostAsJsonAsync<StudentDTO>($"add-student/{Uri.EscapeDataString(subject)}/{groupId}", Mapper.Map<StudentDTO>(student));
+            subject = Uri.EscapeDataString(Uri.EscapeDataString(subject));
+            await httpClient.PostAsJsonAsync<StudentDTO>($"add-student/{subject}/{groupId}", Mapper.Map<StudentDTO>(student));
         }
     }
 }

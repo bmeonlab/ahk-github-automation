@@ -25,14 +25,16 @@ namespace Ahk.Review.Ui.Services
             var exercisesDTO = Mapper.Map<List<ExerciseDTO>>(exercises);
             assignmentDTO.Exercises = exercisesDTO;
 
-            Console.WriteLine(JsonConvert.SerializeObject(assignmentDTO));
+            subject = Uri.EscapeDataString(Uri.EscapeDataString(subject));
 
-            await httpClient.PostAsJsonAsync($"create-assignment/{Uri.EscapeDataString(subject)}", assignmentDTO);
+            await httpClient.PostAsJsonAsync($"create-assignment/{subject}", assignmentDTO);
         }
 
         public async Task<List<Assignment>> GetAssignmentsAsync(string subject)
         {
-            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-assignments/{Uri.EscapeDataString(subject)}");
+            subject = Uri.EscapeDataString(Uri.EscapeDataString(subject));
+
+            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-assignments/{subject}");
             var assignmentDTOs = JsonConvert.DeserializeObject<List<AssignmentDTO>>(response.Value.ToString());
 
             return assignmentDTOs.Select(aDTO =>
@@ -46,14 +48,14 @@ namespace Ahk.Review.Ui.Services
             var assignments = await GetAssignmentsAsync(subject);
             var assignment = assignments.Where(a => a.Id.ToString() == assignmentId).FirstOrDefault();
 
-            Console.WriteLine(JsonConvert.SerializeObject(assignment));
-
             return assignment;
         }
-        
+
         public async Task<List<Exercise>> GetExercisesAsync(string subject, string assignmentId)
         {
-            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-exercises/{Uri.EscapeDataString(subject)}/{assignmentId}");
+            subject = Uri.EscapeDataString(Uri.EscapeDataString(subject));
+
+            var response = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-exercises/{subject}/{assignmentId}");
             var exerciseDTOs = JsonConvert.DeserializeObject<List<ExerciseDTO>>(response.Value.ToString());
 
             return exerciseDTOs.Select(eDTO =>

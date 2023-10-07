@@ -24,8 +24,10 @@ namespace Ahk.Review.Ui.Services
 
         public async Task<List<SubmissionInfo>> GetData(string subject, string repositoryPrefix)
         {
+            subject = Uri.EscapeDataString(Uri.EscapeDataString(subject));
+
             var repoStatResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-statuses/{repositoryPrefix}");
-            var gradesResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-grades/{Uri.EscapeDataString(subject)}/{repositoryPrefix}");
+            var gradesResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-grades/{subject}/{repositoryPrefix}");
             var eventsResponse = await httpClient.GetFromJsonAsync<OkObjectResult>($"list-events/{repositoryPrefix}");
 
             var repoStat = JsonConvert.DeserializeObject<List<SubmissionInfoDTO>>(repoStatResponse.Value.ToString());
@@ -37,7 +39,9 @@ namespace Ahk.Review.Ui.Services
 
         public async Task<Stream> DownloadGradesCsv(string subject, string repositoryPrefix)
         {
-            using var req = new HttpRequestMessage(HttpMethod.Get, $"list-grades/{Uri.EscapeDataString(subject)}/{repositoryPrefix}");
+            subject = Uri.EscapeDataString(Uri.EscapeDataString(subject));
+
+            using var req = new HttpRequestMessage(HttpMethod.Get, $"list-grades/{subject}/{repositoryPrefix}");
             req.Headers.Remove("Accept");
             req.Headers.Add("Accept", "text/csv");
             var resp = await httpClient.SendAsync(req);
@@ -57,7 +61,7 @@ namespace Ahk.Review.Ui.Services
 
         private static List<SubmissionInfo> mergeResults(List<SubmissionInfoDTO> submissionInfoDTOs, List<FinalStudentGrade> grades, List<StatusEventBaseDTO> events)
         {
-            if (submissionInfoDTOs.FirstOrDefault() == null || grades.FirstOrDefault() == null || events.FirstOrDefault() == null)
+            if (!submissionInfoDTOs.Any() || !grades.Any() || !events.Any())
             {
                 return new List<SubmissionInfo>();
             }
