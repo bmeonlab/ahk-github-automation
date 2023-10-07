@@ -54,7 +54,12 @@ namespace Ahk.GradeManagement
 
                     string azureSqlConnString = string.IsNullOrEmpty(connString) ? Environment.GetEnvironmentVariable("SQLAZURECONNSTR_AHK_ConnString") : connString;
 
-                    services.AddDbContext<AhkDbContext>(options => options.UseSqlServer(azureSqlConnString));
+                    var dbContextBuilder = new DbContextOptionsBuilder<AhkDbContext>();
+                    dbContextBuilder.UseSqlServer(azureSqlConnString);
+
+                    AhkDbContext ahkDbContext = new AhkDbContext(dbContextBuilder.Options);
+
+                    services.AddSingleton(ahkDbContext);
                 })
                 .Build();
 

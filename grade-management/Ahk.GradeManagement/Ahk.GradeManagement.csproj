@@ -4,6 +4,7 @@
         <AzureFunctionsVersion>v4</AzureFunctionsVersion>
         <RootNamespace>Ahk.GradeManagement</RootNamespace>
         <PublishReadyToRun>true</PublishReadyToRun>
+        <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
@@ -28,7 +29,7 @@
         <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http" Version="3.1.0" />
         <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Http.AspNetCore" Version="1.0.0" />
         <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage" Version="6.2.0" />
-        <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.14.1" />
+        <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.15.0" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.4">
           <PrivateAssets>all</PrivateAssets>
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
