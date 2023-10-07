@@ -5,7 +5,6 @@
         <RootNamespace>Ahk.GradeManagement</RootNamespace>
         <PublishReadyToRun>true</PublishReadyToRun>
         <_FunctionsSkipCleanOutput>true</_FunctionsSkipCleanOutput>
-        <SkipFunctionsDepsCopy>true</SkipFunctionsDepsCopy>
         <RuntimeIdentifier>win-x64</RuntimeIdentifier>
         <OutputType>Exe</OutputType>
     </PropertyGroup>
@@ -51,5 +50,8 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <CopyToPublishDirectory>Never</CopyToPublishDirectory>
         </None>
+      <None Include="$(USERPROFILE)\.nuget\packages\microsoft.data.sqlclient\5.0.1\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>
