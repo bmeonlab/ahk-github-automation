@@ -30,9 +30,11 @@ namespace Ahk.GradeManagement.Functions.Groups
         [Function("list-groups")]
         public async Task<IActionResult> Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = "list-groups/{subject}")] HttpRequest req, string subject)
         {
-            _logger.LogInformation("C# HTTP trigger function processed a request.");
+            subject = Uri.UnescapeDataString(subject);
 
-            var results = mapper.Map<List<GroupDTO>>(await groupService.ListGroupsAsync(Uri.UnescapeDataString(subject)));
+            _logger.LogInformation($"Listing groups for subject: {subject}");
+
+            var results = mapper.Map<List<GroupDTO>>(await groupService.ListGroupsAsync(subject));
 
             return new OkObjectResult(results);
         }
