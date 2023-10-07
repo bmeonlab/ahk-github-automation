@@ -17,7 +17,7 @@ jobs:
 
       - name: "Run dotnet build"
         working-directory: grade-management
-        run: dotnet build --configuration Release --output ./output --os win
+        run: dotnet build --configuration Release --output ./output
 
       - name: "Run Azure Functions Action"
         uses: Azure/functions-action@v1
