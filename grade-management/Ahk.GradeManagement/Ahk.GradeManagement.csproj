@@ -35,7 +35,6 @@
           <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="7.0.0" />
-        <PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
     </ItemGroup>
 
     <ItemGroup>
@@ -51,5 +50,8 @@
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
             <CopyToPublishDirectory>Never</CopyToPublishDirectory>
         </None>
+      <None Include="$(USERPROFILE)\.nuget\packages\microsoft.data.sqlclient\5.0.1\runtimes\win\lib\netcoreapp3.1\Microsoft.Data.SqlClient.dll">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </None>
     </ItemGroup>
 </Project>
