@@ -1,10 +1,12 @@
 using Ahk.Review.Ui.Models;
 using Ahk.Review.Ui.Services;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 
 namespace Ahk.Review.Ui.Pages.AssignmentPages
 {
+    [Authorize]
     public partial class AssignmentDetails : ComponentBase
     {
         [Parameter]

@@ -1,14 +1,32 @@
+@using Microsoft.AspNetCore.Components.WebAssembly.Authentication
 <MudAppBar Elevation="0">
     <MudText Typo="Typo.h6">Ahk Review Ui</MudText>
-    <MudButton Style="margin:auto" OnClick='() => NavigationManager.NavigateTo("/")'>Home</MudButton>
-    <MudButton Style="margin:auto" OnClick='() => NavigationManager.NavigateTo("/subject-details")' Disabled="string.IsNullOrEmpty(subjectCode)">Details</MudButton>
-    <MudButton Style="margin:auto" OnClick='() => NavigationManager.NavigateTo("/create-subject")'>Add new subject</MudButton>
+
+    <AuthorizeView>
+        <Authorized>
+            <MudButton Style="margin:auto" OnClick='() => NavigationManager.NavigateTo("/")'>Home</MudButton>
+            <MudButton Style="margin:auto" OnClick='() => NavigationManager.NavigateTo("/subject-details")' Disabled="string.IsNullOrEmpty(subjectCode)">Details</MudButton>
+            <MudButton Style="margin:auto" OnClick='() => NavigationManager.NavigateTo("/create-subject")'>Add new subject</MudButton>
+        </Authorized>
+    </AuthorizeView>
+    
     <MudSpacer />
-    <MudSelect Style="margin-left: 70%" T="string" @bind-Value="subjectCode" Label="Subject" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="SetTenant">
-        @foreach (Subject subject in subjects)
-        {
-            <MudSelectItem Value="@subject.SubjectCode">@subject.SubjectCode</MudSelectItem>
-        }
-    </MudSelect>
+
+    <AuthorizeView>
+        <Authorized>
+            <MudSelect Style="margin-left: 70%" T="string" @bind-Value="subjectCode" Label="Subject" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="SetTenant">
+                @foreach (Subject subject in subjects)
+                {
+                    <MudSelectItem Value="@subject.SubjectCode">@subject.SubjectCode</MudSelectItem>
+                }
+            </MudSelect>
+            <MudButton Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => Logout()">Logout</MudButton>
+        </Authorized>
+        <NotAuthorized>
+            <MudButton Class="ma-4 pa-2" Variant="Variant.Filled" Color="Color.Primary" OnClick="() => Login()">Login</MudButton>
+        </NotAuthorized>
+    </AuthorizeView>
+ 
+    
     <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Color="Color.Inherit" Link="https://github.com/akosdudas/ahk-github-automation/" Target="_blank" />
 </MudAppBar>

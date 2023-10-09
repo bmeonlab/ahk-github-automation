@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 using DTOs;
 using Newtonsoft.Json;
+using Microsoft.AspNetCore.Components.Authorization;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Ahk.Review.Ui.Pages
 {
+    [Authorize]
     public partial class Index : ComponentBase
     {
         // displayed info

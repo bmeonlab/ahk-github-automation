@@ -4,6 +4,7 @@ using Ahk.Review.Ui.Services;
 using Blazored.LocalStorage;
 
 using Microsoft.AspNetCore.Components.Web;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
 using MudBlazor.Services;
 
@@ -14,7 +15,15 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddHttpClient("ApiClient", httpClient =>
 {
     httpClient.BaseAddress = new Uri(builder.Configuration.GetSection("baseAddress").Value);
+
+}).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+
+builder.Services.AddMsalAuthentication(options =>
+{
+    builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
+    options.ProviderOptions.LoginMode = "redirect";
 });
+
 builder.Services.AddMudServices();
 builder.Services.AddBlazoredLocalStorage();
 

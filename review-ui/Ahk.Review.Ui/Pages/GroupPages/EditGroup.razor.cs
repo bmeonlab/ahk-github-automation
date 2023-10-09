@@ -1,10 +1,13 @@
 using Ahk.Review.Ui.Models;
 using Ahk.Review.Ui.Services;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Newtonsoft.Json;
 
 namespace Ahk.Review.Ui.Pages.GroupPages
 {
+    [Authorize]
     public partial class EditGroup : ComponentBase
     {
         [Parameter]

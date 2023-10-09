@@ -1,10 +1,13 @@
 using Ahk.Review.Ui.Models;
 using Ahk.Review.Ui.Services;
+
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
 using Microsoft.JSInterop;
 
 namespace Ahk.Review.Ui.Pages.SubjectPages
 {
+    [Authorize]
     public partial class SubjectDetails : ComponentBase, IDisposable
     {
         [Inject]
