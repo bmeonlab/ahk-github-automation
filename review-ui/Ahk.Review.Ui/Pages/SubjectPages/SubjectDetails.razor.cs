@@ -3,6 +3,7 @@ using Ahk.Review.Ui.Services;
 
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.JSInterop;
 
 namespace Ahk.Review.Ui.Pages.SubjectPages
@@ -20,6 +21,7 @@ namespace Ahk.Review.Ui.Pages.SubjectPages
         private NavigationManager NavigationManager { get; set; }
         [Inject]
         private IJSRuntime JSRuntime { get; set; }
+
 
         private int subjectId;
         private string courseCode;

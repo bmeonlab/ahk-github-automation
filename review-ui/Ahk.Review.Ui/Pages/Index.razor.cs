@@ -6,6 +6,7 @@ using DTOs;
 using Newtonsoft.Json;
 using Microsoft.AspNetCore.Components.Authorization;
 using Microsoft.AspNetCore.Authorization;
+using Ahk.Review.Ui.Components;
 
 namespace Ahk.Review.Ui.Pages
 {
@@ -38,7 +39,7 @@ namespace Ahk.Review.Ui.Pages
         private IJSRuntime JS { get; set; }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
 
-        protected override void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
             loaded = true;
         }

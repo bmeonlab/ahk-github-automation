@@ -17,6 +17,8 @@ using Ahk.GradeManagement.Services.StatusTrackingService;
 using Ahk.GradeManagement.Helpers;
 using Ahk.GradeManagement.Services.SubjectService;
 using Microsoft.Extensions.Configuration;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.Identity.Web;
 
 namespace Ahk.GradeManagement
 {

@@ -14,7 +14,7 @@
 
     <AuthorizeView>
         <Authorized>
-            <MudSelect Style="margin-left: 70%" T="string" @bind-Value="subjectCode" Label="Subject" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" SelectedValuesChanged="SetTenant">
+            <MudSelect Style="margin-left: 70%" T="string" @bind-Value="subjectCode" Label="Subject" Variant="Variant.Filled" AnchorOrigin="Origin.BottomCenter" OnOpen="GetSubjects" SelectedValuesChanged="SetTenant">
                 @foreach (Subject subject in subjects)
                 {
                     <MudSelectItem Value="@subject.SubjectCode">@subject.SubjectCode</MudSelectItem>

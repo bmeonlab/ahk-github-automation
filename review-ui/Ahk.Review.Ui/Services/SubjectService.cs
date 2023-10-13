@@ -55,8 +55,6 @@ namespace Ahk.Review.Ui.Services
             TenantCode = tenantCode;
             CurrentTenant = subject;
 
-            Console.WriteLine("SetCurrentTenant Called");
-
             NotifyStateChanged();
         }
 

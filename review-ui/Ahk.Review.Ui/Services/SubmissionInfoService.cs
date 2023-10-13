@@ -3,6 +3,8 @@ using Ahk.Review.Ui.Models;
 using AutoMapper;
 using DTOs;
 
+using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.WebAssembly.Authentication;
 using Microsoft.AspNetCore.Mvc;
 
 using Newtonsoft.Json;
@@ -44,6 +46,7 @@ namespace Ahk.Review.Ui.Services
             using var req = new HttpRequestMessage(HttpMethod.Get, $"list-grades/{subject}/{repositoryPrefix}");
             req.Headers.Remove("Accept");
             req.Headers.Add("Accept", "text/csv");
+
             var resp = await httpClient.SendAsync(req);
             resp.EnsureSuccessStatusCode();
 

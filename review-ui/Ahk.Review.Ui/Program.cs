@@ -15,13 +15,15 @@ builder.RootComponents.Add<HeadOutlet>("head::after");
 builder.Services.AddHttpClient("ApiClient", httpClient =>
 {
     httpClient.BaseAddress = new Uri(builder.Configuration.GetSection("baseAddress").Value);
-
-}).AddHttpMessageHandler<BaseAddressAuthorizationMessageHandler>();
+}).AddHttpMessageHandler(sp => sp.GetRequiredService<AuthorizationMessageHandler>()
+    .ConfigureHandler(authorizedUrls: new[] { builder.Configuration.GetSection("baseAddress").Value },
+                      scopes: new[] { builder.Configuration.GetSection("TokenScope").Value }));
 
 builder.Services.AddMsalAuthentication(options =>
 {
     builder.Configuration.Bind("AzureAd", options.ProviderOptions.Authentication);
     options.ProviderOptions.LoginMode = "redirect";
+    options.ProviderOptions.DefaultAccessTokenScopes.Add(builder.Configuration.GetSection("TokenScope").Value);
 });
 
 builder.Services.AddMudServices();
@@ -30,20 +32,9 @@ builder.Services.AddBlazoredLocalStorage();
 var mapper = MapperConfig.InitializeAutomapper();
 
 builder.Services.AddSingleton(mapper);
-builder.Services.AddSingleton<Ahk.Review.Ui.Services.SubmissionInfoService>();
+builder.Services.AddSingleton<SubmissionInfoService>();
 builder.Services.AddSingleton<SubjectService>();
 builder.Services.AddSingleton<GroupService>();
 builder.Services.AddSingleton<AssignmentService>();
-
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(
-            policy =>
-            {
-                policy.WithOrigins(builder.Configuration.GetSection("baseAddress").Value + "*")
-                                  .AllowAnyHeader()
-                                  .AllowAnyMethod();
-            });
-});
 
 await builder.Build().RunAsync();

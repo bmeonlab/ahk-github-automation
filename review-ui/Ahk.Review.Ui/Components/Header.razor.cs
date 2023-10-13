@@ -19,22 +19,32 @@ namespace Ahk.Review.Ui.Components
         private IJSRuntime JSRuntime { get; set; }
         [Inject]
         private ILocalStorageService LocalStorage { get; set; }
+        [Inject]
+        private AuthenticationStateProvider AuthenticationStateProvider { get; set; }
 
         private string subjectCode = string.Empty;
         private List<Subject> subjects = new List<Subject>();
 
 
-        protected override async void OnInitialized()
+        protected override async Task OnInitializedAsync()
         {
-            var results = await Service.GetSubjects();
-            subjects = results.ToList();
-
             Service.TenantCode = await LocalStorage.GetItemAsStringAsync("SelectedTenantCode");
             Service.CurrentTenant = JsonConvert.DeserializeObject<Subject>(await LocalStorage.GetItemAsStringAsync("SelectedTenant"));
-
-            subjectCode = Service.TenantCode;
-
             StateHasChanged();
+        }
+
+        private async Task GetSubjects()
+        {
+            var authState = await AuthenticationStateProvider.GetAuthenticationStateAsync();
+            if (authState.User.Identity.IsAuthenticated && subjects.Count == 0)
+            {
+                var results = await Service.GetSubjects();
+                subjects = results.ToList();
+
+                subjectCode = Service.TenantCode;
+
+                StateHasChanged();
+            }
         }
 
         private async void SetTenant()
